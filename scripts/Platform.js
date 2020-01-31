@@ -1,5 +1,5 @@
 class Platform{
-    constructor(){
+    constructor(game){
         this.game = game;
         this.row = 0;
         this.col = 0;

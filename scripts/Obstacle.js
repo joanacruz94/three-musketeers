@@ -8,7 +8,8 @@ class Obstacle{
     }
 
     runLogic (){
-
+        this.row++;
+        this.col++;
     }
 
     paint (){

@@ -24,9 +24,9 @@ class Character{
         const context = this.game.context;
 
         context.save();
-    
+        
         context.drawImage(characterPaused, this.col * GRID_SIZE, this.row * GRID_SIZE, this.width, this.height);
-    
+
         context.restore();
     }
 }
