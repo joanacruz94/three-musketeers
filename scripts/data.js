@@ -13,3 +13,5 @@ const characterFinish = new Image();
 characterFinish.src = './images/rayman2.png';
 const monster = new Image();
 monster.src = './images/monster.png';
+const point = new Image();
+point.src = './images/apple.png';

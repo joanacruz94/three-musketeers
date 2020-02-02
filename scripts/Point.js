@@ -1,10 +1,10 @@
 class Point{
-    constructor(game){
+    constructor(game, row, col){
         this.game = game;
-        this.row = 0;
-        this.col = 0;
-        this.width = 100;
-        this.height = 100;
+        this.row = row;
+        this.col = col;
+        this.width = 50;
+        this.height = 50;
     }
 
     runLogic (){
@@ -16,7 +16,7 @@ class Point{
 
         context.save();
         
-        context.drawImage(monster, this.col * GRID_SIZE, this.row * GRID_SIZE, this.width, this.height);
+        context.drawImage(point, this.col * GRID_SIZE, this.row * GRID_SIZE, this.width, this.height);
     
         context.restore();
     }
