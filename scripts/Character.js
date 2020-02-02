@@ -99,19 +99,19 @@ class Character{
             this.airTime++;
         }
         
-		paint (){
-			const context = this.game.context;
+    paint (){
+        const context = this.game.context;
 
-            context.save();
-            
-            if(this.direction === 'right')
-                context.drawImage(this.image, this.posX, this.posY, this.width, this.height);
-            else if(this.direction === 'left'){
-                context.scale(-1, 1);
-                context.drawImage(this.image, -this.posX, this.posY, this.width, this.height);
-            }
-            context.restore();
+        context.save();
+        
+        if(this.direction === 'right')
+            context.drawImage(this.image, this.posX, this.posY, this.width, this.height);
+        else if(this.direction === 'left'){
+            context.scale(-1, 1);
+            context.drawImage(this.image, -this.posX, this.posY, this.width, this.height);
         }
+        context.restore();
+    }
 	}
 
 
