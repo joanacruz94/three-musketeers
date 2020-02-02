@@ -1,8 +1,8 @@
-class Character{
+class CharacterOne{
 	constructor(game){
         this.game = game;
-        this.width = 80;
-        this.height = 80;
+        this.width = 100;
+        this.height = 100;
 	    this.delay = 0;
 		this.posX = this.game.$canvas.width/2 - this.width/2;
 		this.posY = this.game.$canvas.height - this.height;
@@ -13,21 +13,9 @@ class Character{
 		this.airTime = 0;
 		this.velocity= 0.05;
 		this.velocityUp = 0;
-        this.velocityDown = 0;
-        this.direction = 'right';
-        this.image = characterPaused;
+		this.velocityDown = 0;
     }
     
-    moveRight (){
-        this.direction = 'right';
-        this.posX += this.speed * this.velocity;                        
-    }
-
-    moveLeft (){
-        this.direction = 'left';
-        this.posX -= this.speed * this.velocity;
-    }
-
     runLogic (){			
 		// record old position
 		this.prevX = this.posX;
@@ -48,6 +36,7 @@ class Character{
         }
         // jump higher if held longer
         else if (this.jumping && this.airTime > 1 && this.airTime < 12 && keys.up in keysDown) {
+            console.log('ola');
             this.velocityUp += 1;
         }
         // fall faster if jump isn't as strong
@@ -60,27 +49,26 @@ class Character{
                 this.velocityUp--;
             }
             else if (this.velocityDown < this.jumpSpeed){
+                
+                console.log(gravitySpeed);
                 this.velocityDown += gravitySpeed;
             }
         }
 			
+        // player presses left
         if (this.posX > 0 && keys.left in keysDown) { 
-            this.moveLeft();
+            this.posX -= this.speed * this.velocity;
         }
-
+        // presses right
         if (this.posX + this.width < this.game.$canvas.width && keys.right in keysDown) { 
-            this.moveRight();
+            this.posX += this.speed * this.velocity;
         }
 
         // update running velocity
-        if ((keys.left in keysDown && this.prevX > this.posX) || (keys.right in keysDown && this.prevX < this.posX)){
-            this.velocity += 0.05;
-            this.image = characterRunning;
-        }
-        else{
-            this.velocity = 0.05;
-            this.image = characterPaused;
-        }
+        if ((keys.left in keysDown && this.prevX > this.posX) || (keys.right in keysDown && this.prevX < this.posX))
+            this.velocity += .05;
+        else
+            this.velocity = .05;
 
         // cap velocity at 1
         if (this.velocity > 1)
@@ -100,27 +88,8 @@ class Character{
         }
         
 		paint (){
-			const context = this.game.context;
-
-            context.save();
-            
-            if(this.direction === 'right')
-                context.drawImage(this.image, this.posX, this.posY, this.width, this.height);
-            else if(this.direction === 'left'){
-                context.scale(-1, 1);
-                context.drawImage(this.image, -this.posX, this.posY, this.width, this.height);
-            }
-            context.restore();
-        }
+			
+			// draw on canvas
+			this.game.context.drawImage(characterPaused, this.posX, this.posY, this.width, this.height);
+		}
 	}
-
-
-
-
-
-
-    
-
-
-
-    

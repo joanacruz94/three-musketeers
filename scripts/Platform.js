@@ -16,8 +16,8 @@ class Platform{
 
         context.save();
          
-        context.fillStyle = 'green';
-        context.fillRect(this.col * GRID_SIZE, this.row * GRID_SIZE, this.width, this.height);
+        //context.fillStyle = 'green';
+        context.drawImage(pattern, this.col * GRID_SIZE, this.row * GRID_SIZE, this.width, this.height);
 
         context.restore();
     }

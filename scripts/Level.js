@@ -33,16 +33,42 @@ class Level{
         //this.platform.runLogic();
         this.obstacle.runLogic();
         //this.point.runLogic();
+
+        for (let i = 0; i < this.platforms.length; i++) {
+            // look for collisions with this.game.character
+            if (!(keys.down in keysDown) && this.game.character.velocityUp <= 0) {
+                // compare x/y values
+                if (this.game.character.posY + this.game.character.height > this.platforms[i].row * GRID_SIZE && 
+                    this.game.character.posY + this.game.character.height < this.platforms[i].row * GRID_SIZE + this.platforms[i].height && 
+                    this.game.character.posY + this.game.character.height - this.game.character.velocityDown - collisionPadding < this.platforms[i].row * GRID_SIZE && 
+                    this.game.character.posX + this.game.character.width > this.platforms[i].col * GRID_SIZE + collisionPadding && 
+                    this.game.character.posX < this.platforms[i].col * GRID_SIZE + this.platforms[i].width - collisionPadding) {
+                    // stop this.game.character
+                    this.game.character.posY = this.platforms[i].row * GRID_SIZE - this.game.character.height;
+                    
+                    // reset jumping/falling
+                    this.game.character.jumping = false;
+                    this.game.character.velocityDown = 0;
+                }
+            }
+        }
+
+        for(let j = 0; j < this.points.length; j++){
+            console.log(this.game.character.posY);
+            console.log(this.points[j].row * GRID_SIZE);
+            if(Math.floor(this.game.character.posY) === this.points[j].row * GRID_SIZE){
+                this.points.splice(j, 1);
+            }
+        }
     }
 
     paint (){
         this.clearScreen();
-        //const context = this.game.context;
-        //context.drawImage(background, 0, 0, this.game.$canvas.width, this.game.$canvas.height);
         const context = this.game.context;
         context.save();
-        context.fillStyle = 'black';
-        context.fillRect(0, 0, this.game.$canvas.width, this.game.$canvas.height);
+        context.drawImage(backTwo, 0, 0, this.game.$canvas.width, this.game.$canvas.height);
+        //context.fillStyle = 'black';
+        //context.fillRect(0, 0, this.game.$canvas.width, this.game.$canvas.height);
         context.restore();
         this.game.character.paint();
         for(let i = 0; i < this.platforms.length; i++)
