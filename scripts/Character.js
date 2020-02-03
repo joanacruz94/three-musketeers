@@ -30,16 +30,16 @@ class Character{
 
     runLogic (){			
 		// record old position
-		this.prevX = this.posX;
-			
+        this.prevX = this.posX;
+
 		// don't fall of screen
 		if (this.posY + this.height >= this.game.$canvas.height) {
             this.jumping = false;
             this.posY = this.game.$canvas.height - this.height;
             this.velocityDown = 0;
 		}
-			        
-		// player presses up to jump
+        
+        // player presses up to jump
         if (!this.jumping && keys.up in keysDown && this.velocityDown <= 0) { 
             this.velocityUp = this.jumpSpeed/2;
             this.velocityDown = 0;
@@ -63,7 +63,7 @@ class Character{
                 this.velocityDown += gravitySpeed;
             }
         }
-			
+        		
         if (this.posX > 0 && keys.left in keysDown) { 
             this.moveLeft();
         }

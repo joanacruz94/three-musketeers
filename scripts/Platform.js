@@ -8,7 +8,7 @@ class Platform{
     }
 
     runLogic (){
-
+        this.col -= 0.05;
     }
 
     paint (){
