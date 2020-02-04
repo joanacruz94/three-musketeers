@@ -11,8 +11,10 @@ class LevelOne extends Level{
         this.point2 = new Point(game, 6, 6.5);
         this.point3 = new Point(game, 4, 9.5);
         this.point4 = new Point(game, 2, 12.5);
-        this.platforms = [];
-        this.points = [];
+        this.loadData();
+    }
+
+    loadData (){
         this.platforms.push(this.platform);
         this.platforms.push(this.platform1);
         this.platforms.push(this.platform2);
@@ -24,31 +26,9 @@ class LevelOne extends Level{
         this.points.push(this.point4);
     }
 
-    clearScreen () {
-        this.game.context.clearRect(0, 0, this.game.$canvas.width, this.game.$canvas.height);
-    }
-
-
     runLogic (){
-        this.runPlatformLogic();
         this.obstacle.runLogic();
-        /*for (let platform of this.platforms) {
-            const horizontalIntersection = platform.checkIntersection(this.game.character.prevX, this.game.character.posY, this.game.character.posX, this.game.character.width, this.game.character.height);
-            const verticalIntersection = platform.checkIntersection(this.game.character.posX, this.game.character.prevY, this.game.character.posY, this.game.character.width, this.game.character.height);
-            if (verticalIntersection) {
-                this.game.character.velocityY = 0;
-                this.game.character.posY = platform.row * GRID_SIZE - this.game.character.height;
-                this.game.character.jumping = false;
-              }
-            if (horizontalIntersection) {
-                this.game.character.velocityX = 0;
-                this.game.character.posX = platform.col * GRID_SIZE;
-            }
-            this.game.character.velocityY += this.game.character.gravity / 1000 * 16;
-            this.game.character.posY += this.game.character.velocityY;
-          
-          
-        }*/
+        this.runPlatformLogic();
     }
 
     paint (){
@@ -57,11 +37,21 @@ class LevelOne extends Level{
         context.save();
         context.drawImage(backTwo, 0, 0, this.game.$canvas.width, this.game.$canvas.height);
         context.restore();
-        this.game.character.paint();
+        this.character.paint();
         for(let i = 0; i < this.platforms.length; i++)
             this.platforms[i].paint();
         this.obstacle.paint();
         for(let j = 0; j < this.points.length; j++)
             this.points[j].paint(); 
+    }
+
+    loop (timestamp) {
+        //console.log('TIMESTAMP', timestamp);
+        this.runLogic();
+        this.paint();
+        
+        if(this.gameisRunning){
+            window.requestAnimationFrame((timestamp) => this.loop(timestamp));
+        }
     }
 }

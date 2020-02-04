@@ -14,8 +14,13 @@ class Obstacle{
     runLogic (){
         this.posX += this.xSpeed;
 
-        if (this.posX < 250 || this.posX > 450) {
+        if (this.posX < 180) {
             this.xSpeed *= -1;
+            this.direction = 'right';
+        }
+        else if(this.posX > 430){
+            this.xSpeed *= -1;
+            this.direction = 'left';
         }
     }
 
@@ -26,8 +31,7 @@ class Obstacle{
         
         if(this.xSpeed < 0) {
             context.scale(-1, 1);
-            context.drawImage(monster, -this.posX, this.posY, this.width, this.height);
-
+            context.drawImage(monster, -this.posX - this.width, this.posY, this.width, this.height);
         }
         else{
             context.drawImage(monster, this.posX, this.posY, this.width, this.height);

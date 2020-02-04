@@ -3,8 +3,6 @@ class LevelTwo extends Level{
         super(game);
         this.posXBack = 0;
         this.speed = 3;
-        this.platforms = [];
-        this.points = [];
         for (let i = 0; i < 500; i++) {
             this.platforms.push(this.setRandomPosition(5 * i));
         }
@@ -17,16 +15,10 @@ class LevelTwo extends Level{
         const width = 150;
         const point = new Point(this.game, row - 1, col + 1);
         this.points.push(point);
-        console.log(point);
         return new Platform(this.game, row, col, width, height, pattern);
     }
 
-    clearScreen () {
-        this.game.context.clearRect(0, 0, this.game.$canvas.width, this.game.$canvas.height);
-    }
-
     runLogic (){
-        this.runPlatformLogic();
         this.posXBack -= this.speed;
         if (backFour.width) {
             this.posXBack = this.posXBack % backFour.width;
@@ -39,6 +31,7 @@ class LevelTwo extends Level{
         for(let j = 0; j < this.points.length; j++){
             this.points[j].runLogic();
         }
+        this.runPlatformLogic();
     }
 
     paint (){
@@ -52,6 +45,16 @@ class LevelTwo extends Level{
             this.points[j].paint();
         for(let i = 0; i < this.platforms.length; i++)
             this.platforms[i].paint();
-        this.game.character.paint();
+        this.character.paint();
+    }
+
+    loop (timestamp) {
+        //console.log('TIMESTAMP', timestamp);
+        this.runLogic();
+        this.paint();
+        
+        if(this.gameisRunning){
+            window.requestAnimationFrame((timestamp) => this.loop(timestamp));
+        }
     }
 }

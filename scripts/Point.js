@@ -11,6 +11,10 @@ class Point{
         this.col -= 0.02;
     }
 
+    moveDown (){
+        this.row += 0.02;
+    }
+
     paint (){
         const context = this.game.context;
 

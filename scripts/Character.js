@@ -9,11 +9,23 @@ class Character {
     this.velocityY = 0;
     this.gravity = 10;
     this.friction = 15;
-    this.platforms = this.game.levelOne.platforms;
+    this.nextVelX = 0;
+    this.nextVelY = 0;
+    this.nextPosX = 0;
+    this.nextPosY = 0;
     this.image = characterPaused;
     this.jumping = false;
     this.direction = 0;
     this.lastPressed = 'right';
+    this.matter = true;
+  }
+
+  setPosY(pos){
+    this.posY = pos;
+  }
+
+  setPosX(pos){
+    this.posX = pos;
   }
 
   jump () {
@@ -38,35 +50,7 @@ class Character {
       this.direction = 0;
     }
 
-    let velX = this.velocityX / (1 + this.friction / 1000 * 16) + this.direction * 0.5;
-    let velY = this.velocityY + (this.gravity / 1000 * 16);
-    
-    let pX = this.posX + velX;
-    let pY = this.posY + velY;
-
-    for (let obstacle of this.platforms) {
-      const horizontalIntersection = obstacle.checkIntersection(
-        pX, this.posY, this.width, this.height);
-      const verticalIntersection = obstacle.checkIntersection(
-        this.posX, pY, this.width, this.height);
-
-      if (verticalIntersection) {
-        velY = 0;
-        pY = this.posY;
-        this.jumping = false;
-      }
-      if (horizontalIntersection) {
-        velX = 0;
-        pX = this.posX;
-      }
-    }
-
-    this.velocityX = velX;
-    this.velocityY = velY;
-    this.posX = pX;
-    this.posY = pY;
-
-    if (this.posY + this.height >= this.game.$canvas.height) {
+    if (this.posY + this.height >= this.game.$canvas.height && this.matter) {
       this.jumping = false;
       this.posY = this.game.$canvas.height - this.height;
       this.velocityY = 0;
@@ -78,6 +62,7 @@ class Character {
 
     if(this.posX<= 0) this.posX = 0;
 
+    if(keys.space in keysDown) this.jump();
   }
 
   paint() {
@@ -97,7 +82,7 @@ class Character {
       context.scale(-1, 1);
       context.drawImage(
         this.image,
-        -this.posX,
+        -this.posX - this.width,
         this.posY,
         this.width,
         this.height
@@ -115,7 +100,7 @@ class Character {
       context.scale(-1, 1);
       context.drawImage(
         this.image,
-        -this.posX,
+        -this.posX - this.width,
         this.posY,
         this.width,
         this.height

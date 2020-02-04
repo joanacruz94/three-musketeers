@@ -10,9 +10,9 @@ const $levelThree = $$levelsList[2];
 const $levelFour = $$levelsList[3];
 const $levelFive = $$levelsList[4];
 
-$levelOne.addEventListener('click', () => {game.startGame(1);});
-$levelTwo.addEventListener('click', () => {game.startGame(2);});
-$levelThree.addEventListener('click', () => {game.startGame(3);});
-$levelFour.addEventListener('click', () => {game.startGame(4);});
-$levelFive.addEventListener('click', () => {game.startGame(5);});
+$levelOne.addEventListener('click', () => {game.startLevel(1);});
+$levelTwo.addEventListener('click', () => {game.startLevel(2);});
+$levelThree.addEventListener('click', () => {game.startLevel(3);});
+$levelFour.addEventListener('click', () => {game.startLevel(4);});
+$levelFive.addEventListener('click', () => {game.startLevel(5);});
 

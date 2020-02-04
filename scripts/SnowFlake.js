@@ -17,7 +17,6 @@ class SnowFlake{
 
         context.save();
          
-        //context.fillStyle = 'green';
         context.drawImage(this.image, this.col * GRID_SIZE, this.row * GRID_SIZE, this.width, this.height);
 
         context.restore();

@@ -6,35 +6,36 @@ class Game{
         this.levelOne = new LevelOne(this);
         this.levelTwo = new LevelTwo(this);
         this.levelThree = new LevelThree(this);
-        this.levelFour = new LevelThree(this);
-        this.levelFive = new LevelThree(this);
-        this.character = new Character(this);
+        this.levelFour = new LevelFour(this);
+        this.levelFive = new LevelFive(this);
+     
     }
 
-    control (value) {
-        switch (value) {
-          case 'jump':
-            this.character.jump();
-            break;
-        }
-      }
+    resetGame() {
+        this.levelOne.reset();
+        this.levelTwo.reset();
+        this.levelThree.reset();
+        this.levelFour.reset();
+        this.levelFive.reset();
+    }
 
-    startGame (idLevel){
+    startLevel (idLevel){
+        this.resetGame();
         switch(idLevel){
             case 1:
-                this.levelOne.loop();
+                this.levelOne.startLevel();
                 break;
             case 2:
-                this.levelTwo.loop();
+                this.levelTwo.startLevel();
                 break;
             case 3:
-                this.levelThree.loop();
+                this.levelThree.startLevel();
                 break;
             case 4:
-                this.levelFour.loop();
+                this.levelFour.startLevel();
                 break;
             case 5:
-                this.levelFive.loop();
+                this.levelFive.startLevel();
                 break;
         }
     }
