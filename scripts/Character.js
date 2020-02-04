@@ -1,126 +1,126 @@
-class Character{
-	constructor(game){
-        this.game = game;
-        this.width = 80;
-        this.height = 80;
-	    this.delay = 0;
-		this.posX = this.game.$canvas.width/2 - this.width/2;
-		this.posY = this.game.$canvas.height - this.height;
-		this.prevX = 0;
-		this.speed = 4,
-		this.jumpSpeed = 17;
-		this.jumping = false;
-		this.airTime = 0;
-		this.velocity= 0.05;
-		this.velocityUp = 0;
-        this.velocityDown = 0;
-        this.direction = 'right';
-        this.image = characterPaused;
+class Character {
+  constructor (game) {
+    this.game = game;
+    this.width = 60;
+    this.height = 60;
+    this.posX = 120;
+    this.posY = this.game.$canvas.height - this.height;
+    this.velocityX = 0;
+    this.velocityY = 0;
+    this.gravity = 10;
+    this.friction = 15;
+    this.platforms = this.game.levelOne.platforms;
+    this.image = characterPaused;
+    this.jumping = false;
+    this.direction = 0;
+    this.lastPressed = 'right';
+  }
+
+  jump () {
+    if (!this.jumping) {
+      this.velocityY = -8;
+      this.jumping = true;
     }
+  }
+
+  runLogic() {
+    if (keys.right in keysDown){
+      this.direction = 1;
+      this.image = characterRunning;
+      this.lastPressed = 'right';
+    } else if (keys.left in keysDown){
+      this.direction = -1;
+      this.image = characterRunning;
+      this.lastPressed = 'left';
+    }
+    else {
+      this.image = characterPaused; 
+      this.direction = 0;
+    }
+
+    let velX = this.velocityX / (1 + this.friction / 1000 * 16) + this.direction * 0.5;
+    let velY = this.velocityY + (this.gravity / 1000 * 16);
     
-    moveRight (){
-        this.direction = 'right';
-        this.posX += this.speed * this.velocity;                        
+    let pX = this.posX + velX;
+    let pY = this.posY + velY;
+
+    for (let obstacle of this.platforms) {
+      const horizontalIntersection = obstacle.checkIntersection(
+        pX, this.posY, this.width, this.height);
+      const verticalIntersection = obstacle.checkIntersection(
+        this.posX, pY, this.width, this.height);
+
+      if (verticalIntersection) {
+        velY = 0;
+        pY = this.posY;
+        this.jumping = false;
+      }
+      if (horizontalIntersection) {
+        velX = 0;
+        pX = this.posX;
+      }
     }
 
-    moveLeft (){
-        this.direction = 'left';
-        this.posX -= this.speed * this.velocity;
+    this.velocityX = velX;
+    this.velocityY = velY;
+    this.posX = pX;
+    this.posY = pY;
+
+    if (this.posY + this.height >= this.game.$canvas.height) {
+      this.jumping = false;
+      this.posY = this.game.$canvas.height - this.height;
+      this.velocityY = 0;
     }
 
-    runLogic (){			
-		// record old position
-        this.prevX = this.posX;
+    if(this.posY <= 0) this.posY = 0;
 
-		// don't fall of screen
-		if (this.posY + this.height >= this.game.$canvas.height) {
-            this.jumping = false;
-            this.posY = this.game.$canvas.height - this.height;
-            this.velocityDown = 0;
-		}
-        
-        // player presses up to jump
-        if (!this.jumping && keys.up in keysDown && this.velocityDown <= 0) { 
-            this.velocityUp = this.jumpSpeed/2;
-            this.velocityDown = 0;
-            this.jumping = true;
-            this.airTime = 0;
-        }
-        // jump higher if held longer
-        else if (this.jumping && this.airTime > 1 && this.airTime < 12 && keys.up in keysDown) {
-            this.velocityUp += 1;
-        }
-        // fall faster if jump isn't as strong
-        else if (this.jumping && this.velocityUp > 0 && this.airTime < 50) {
-            this.velocityUp -= 2;
-        }
-        // update gravity
-        else {
-            if (this.velocityUp > 0){
-                this.velocityUp--;
-            }
-            else if (this.velocityDown < this.jumpSpeed){
-                this.velocityDown += gravitySpeed;
-            }
-        }
-        		
-        if (this.posX > 0 && keys.left in keysDown) { 
-            this.moveLeft();
-        }
+    if(this.posX + this.width >= this.game.$canvas.width) this.posX = this.game.$canvas.width - this.width;
 
-        if (this.posX + this.width < this.game.$canvas.width && keys.right in keysDown) { 
-            this.moveRight();
-        }
+    if(this.posX<= 0) this.posX = 0;
 
-        // update running velocity
-        if ((keys.left in keysDown && this.prevX > this.posX) || (keys.right in keysDown && this.prevX < this.posX)){
-            this.velocity += 0.05;
-            this.image = characterRunning;
-        }
-        else{
-            this.velocity = 0.05;
-            this.image = characterPaused;
-        }
+  }
 
-        // cap velocity at 1
-        if (this.velocity > 1)
-            this.velocity = 1;
-			
-        // final jump
-        if (this.velocityUp > 0)
-            this.posY = this.posY - this.velocityUp;
-        // final fall
-        else if (this.velocityUp < 1) {
-            this.posY = this.posY + this.velocityDown;
-        }
+  paint() {
+    const context = this.game.context;
 
-        // update time in air when jumping
-        if (this.jumping)
-            this.airTime++;
-        }
-        
-    paint (){
-        const context = this.game.context;
+    context.save();
 
-        context.save();
-        
-        if(this.direction === 'right')
-            context.drawImage(this.image, this.posX, this.posY, this.width, this.height);
-        else if(this.direction === 'left'){
-            context.scale(-1, 1);
-            context.drawImage(this.image, -this.posX, this.posY, this.width, this.height);
-        }
-        context.restore();
+    if (this.direction === 1) {
+      context.drawImage(
+        this.image,
+        this.posX,
+        this.posY,
+        this.width,
+        this.height
+      );
+    } else if (this.direction === -1) {
+      context.scale(-1, 1);
+      context.drawImage(
+        this.image,
+        -this.posX,
+        this.posY,
+        this.width,
+        this.height
+      );
     }
-	}
-
-
-
-
-
-
-    
-
-
-
-    
+    else if(this.direction === 0 && this.lastPressed === 'right'){
+      context.drawImage(
+        this.image,
+        this.posX,
+        this.posY,
+        this.width,
+        this.height
+      );
+    } else {
+      context.scale(-1, 1);
+      context.drawImage(
+        this.image,
+        -this.posX,
+        this.posY,
+        this.width,
+        this.height
+      );
+    }
+    context.restore();
+  }
+}

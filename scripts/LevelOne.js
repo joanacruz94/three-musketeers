@@ -2,11 +2,11 @@ class LevelOne extends Level{
     constructor(game){
         super(game);
         this.obstacle = new Obstacle(game);
-        this.platform = new Platform(game, 9, 3, 100, 50);
-        this.platform1 = new Platform(game, 7, 6, 100, 50);
-        this.platform2 = new Platform(game, 5, 9, 100, 50);
-        this.platform3 = new Platform(game, 3, 12, 100, 50);
-        this.platform4 = new Platform(game, 2, 4, 300, 50);
+        this.platform = new Platform(game, 9, 3, 100, 50, pattern);
+        this.platform1 = new Platform(game, 7, 6, 100, 50, pattern);
+        this.platform2 = new Platform(game, 5, 9, 100, 50, pattern);
+        this.platform3 = new Platform(game, 3, 12, 100, 50, pattern);
+        this.platform4 = new Platform(game, 2, 4, 300, 50, pattern);
         this.point1 = new Point(game, 8, 3.5);
         this.point2 = new Point(game, 6, 6.5);
         this.point3 = new Point(game, 4, 9.5);
@@ -28,48 +28,27 @@ class LevelOne extends Level{
         this.game.context.clearRect(0, 0, this.game.$canvas.width, this.game.$canvas.height);
     }
 
+
     runLogic (){
-        this.game.character.runLogic();
-        //this.platform.runLogic();
+        this.runPlatformLogic();
         this.obstacle.runLogic();
-        //this.point.runLogic();
-
-        for (let i = 0; i < this.platforms.length; i++) {
-            /*if (this.game.character.velocityUp > 0){
-                if(this.game.character.posY + this.game.character.height < this.platforms[i].row * GRID_SIZE + this.platforms[i].height
-                    && this.game.character.posX > this.platforms[i].col * GRID_SIZE &&
-                    this.game.character.posX < this.platforms[i].col * GRID_SIZE + this.platforms[i].width){
-                    console.log('ola');
-                    this.game.character.posY = this.game.$canvas.height;
-                    this.game.character.jumping = true;
-                    this.game.character.velocityDown = 0;
-                }
-            }*/
-            // look for collisions with this.game.character
-            if (!(keys.down in keysDown) && this.game.character.velocityUp <= 0) {
-                // compare x/y values
-                if (this.game.character.posY + this.game.character.height > this.platforms[i].row * GRID_SIZE && 
-                    this.game.character.posY + this.game.character.height < this.platforms[i].row * GRID_SIZE + this.platforms[i].height && 
-                    this.game.character.posY + this.game.character.height - this.game.character.velocityDown - collisionPadding < this.platforms[i].row * GRID_SIZE && 
-                    this.game.character.posX + this.game.character.width > this.platforms[i].col * GRID_SIZE + collisionPadding && 
-                    this.game.character.posX < this.platforms[i].col * GRID_SIZE + this.platforms[i].width - collisionPadding) {
-                    // stop this.game.character
-                    this.game.character.posY = this.platforms[i].row * GRID_SIZE - this.game.character.height;
-                    
-                    // reset jumping/falling
-                    this.game.character.jumping = false;
-                    this.game.character.velocityDown = 0;
-                }
+        /*for (let platform of this.platforms) {
+            const horizontalIntersection = platform.checkIntersection(this.game.character.prevX, this.game.character.posY, this.game.character.posX, this.game.character.width, this.game.character.height);
+            const verticalIntersection = platform.checkIntersection(this.game.character.posX, this.game.character.prevY, this.game.character.posY, this.game.character.width, this.game.character.height);
+            if (verticalIntersection) {
+                this.game.character.velocityY = 0;
+                this.game.character.posY = platform.row * GRID_SIZE - this.game.character.height;
+                this.game.character.jumping = false;
+              }
+            if (horizontalIntersection) {
+                this.game.character.velocityX = 0;
+                this.game.character.posX = platform.col * GRID_SIZE;
             }
-        }
-
-        for(let j = 0; j < this.points.length; j++){
-            let positionY = Math.floor(this.game.character.posY);
-            if(positionY + this.game.character.height < this.points[j].row * GRID_SIZE + this.points[j].height &&
-                this.game.character.posX + this.game.character.width > this.points[j].col * GRID_SIZE + this.points[j].width){
-                this.points.splice(j, 1);
-            }
-        }
+            this.game.character.velocityY += this.game.character.gravity / 1000 * 16;
+            this.game.character.posY += this.game.character.velocityY;
+          
+          
+        }*/
     }
 
     paint (){
@@ -83,13 +62,6 @@ class LevelOne extends Level{
             this.platforms[i].paint();
         this.obstacle.paint();
         for(let j = 0; j < this.points.length; j++)
-            this.points[j].paint();
-    }
-    loop (timestamp) {
-        //console.log('TIMESTAMP', timestamp);
-        this.runLogic();
-        this.paint();
-        
-        window.requestAnimationFrame((timestamp) => this.loop(timestamp));
+            this.points[j].paint(); 
     }
 }

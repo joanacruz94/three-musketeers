@@ -12,3 +12,13 @@ addEventListener("keydown", (e) => {
 addEventListener("keyup", (e) => {
 	delete keysDown[e.keyCode];
 }, false);
+
+
+addEventListener("keydown", (e) => {
+    e.preventDefault();
+    switch(event.keyCode){
+        case 32:
+            game.control('jump');
+        break;
+    }
+})

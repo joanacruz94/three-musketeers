@@ -8,7 +8,7 @@ class Point{
     }
 
     runLogic (){
-        this.col -= 0.05;
+        this.col -= 0.02;
     }
 
     paint (){

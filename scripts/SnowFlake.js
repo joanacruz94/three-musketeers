@@ -1,4 +1,4 @@
-class Platform{
+class SnowFlake{
     constructor(game, row, col, width, height, image){
         this.game = game;
         this.row = row;
@@ -9,15 +9,7 @@ class Platform{
     }
 
     runLogic (){
-        this.col -= 0.02;
-    }
-
-
-    checkIntersection (posX, posY, width, height) {
-        return posY + height > this.row * GRID_SIZE &&
-        posY < this.row * GRID_SIZE  + this.height &&
-        posX + width > this.col * GRID_SIZE  &&
-        posX < this.col * GRID_SIZE  + this.width;
+        this.row += 0.02;
     }
 
     paint (){
