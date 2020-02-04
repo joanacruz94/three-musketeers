@@ -10,14 +10,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: burlywood;
+  background-color: black;
 }
 
 section {
   display: flex;
-}
-
-
-canvas {
-  background-color: white;
 }

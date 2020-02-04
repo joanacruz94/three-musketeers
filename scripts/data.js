@@ -5,6 +5,27 @@ const directions = Object.freeze({"right":1, "left":2, "up":3, "down":4});
 const collisionPadding = 10;
 var gravitySpeed = 0.3;
 
+
+const audio = new Audio('./audio/rayman.mp3');
+const audio1 = new Audio('./audio/jak.mp3');
+const audio2 = new Audio('./audio/crash.mp3');
+
+const arrow = new Image();
+arrow.src = './images/arrow.png';
+const jack = new Image();
+jack.src = './images/jack.png';
+const jackOne = new Image();
+jackOne.src = './images/jackOne.png';
+const raymanF = new Image();
+raymanF.src = './images/rayMana.png';
+const crash = new Image();
+crash.src = './images/crash.png';
+const frog = new Image();
+frog.src = './images/sapo.png';
+const tromba = new Image();
+tromba.src = './images/tromba.png';
+const arrowMirror = new Image();
+arrowMirror.src = './images/arrowMirrow.png';
 const background = new Image();
 background.src = './images/back.jpg';
 const backgroundOne = new Image();
@@ -35,3 +56,15 @@ const icePattern = new Image();
 icePattern.src = './images/icePattern.jpg';
 const point = new Image();
 point.src = './images/apple.png';
+const final = new Image();
+final.src = './images/power.png';
+
+/****** ARRAYS ******/
+const arrayImages = [];
+arrayImages.push(raymanF);
+arrayImages.push(jack);
+arrayImages.push(crash);
+const arrayMusic = [];
+arrayMusic.push(audio);
+arrayMusic.push(audio1);
+arrayMusic.push(audio2);

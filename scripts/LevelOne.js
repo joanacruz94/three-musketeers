@@ -1,7 +1,6 @@
 class LevelOne extends Level{
     constructor(game){
         super(game);
-        this.obstacle = new Obstacle(game);
         this.platform = new Platform(game, 9, 3, 100, 50, pattern);
         this.platform1 = new Platform(game, 7, 6, 100, 50, pattern);
         this.platform2 = new Platform(game, 5, 9, 100, 50, pattern);
@@ -12,6 +11,9 @@ class LevelOne extends Level{
         this.point3 = new Point(game, 4, 9.5);
         this.point4 = new Point(game, 2, 12.5);
         this.loadData();
+        this.door.setPosX(320);
+        this.door.setPosY(30);
+        this.obstacle = new Obstacle(this.game); 
     }
 
     loadData (){
@@ -27,7 +29,6 @@ class LevelOne extends Level{
     }
 
     runLogic (){
-        this.obstacle.runLogic();
         this.runPlatformLogic();
     }
 
@@ -37,12 +38,7 @@ class LevelOne extends Level{
         context.save();
         context.drawImage(backTwo, 0, 0, this.game.$canvas.width, this.game.$canvas.height);
         context.restore();
-        this.character.paint();
-        for(let i = 0; i < this.platforms.length; i++)
-            this.platforms[i].paint();
-        this.obstacle.paint();
-        for(let j = 0; j < this.points.length; j++)
-            this.points[j].paint(); 
+        this.paintPlatform();
     }
 
     loop (timestamp) {

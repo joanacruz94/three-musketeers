@@ -1,14 +1,17 @@
 class Shoot{
-    constructor (game){
+    constructor (game, posX, posY, direction){
         this.game = game;
-        this.posX = 250;
-        this.posY = 0;
-        this.width = 100;
-        this.height = 100;
+        this.posX = posX;
+        this.posY = posY;
+        this.width = 25;
+        this.height = 25;
+        this.direction = direction;
     }
 
     runLogic (){
-
+        if(this.direction === 'right')
+            this.posX += 2;
+        else this.posX -= 2;
     }
 
     paint (){
@@ -16,7 +19,8 @@ class Shoot{
 
         context.save();
         
-        context.drawImage(monster, this.posX, this.posY, this.width, this.height);
+        context.fillStyle = 'red';
+        context.fillRect(this.posX, this.posY, this.width, this.height);
 
         context.restore();
     }

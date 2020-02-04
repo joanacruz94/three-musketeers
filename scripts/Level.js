@@ -5,6 +5,9 @@ class Level{
         this.platforms = [];
         this.points = [];
         this.gameisRunning = true;
+        this.door = new Door(game);
+        this.shoot = null;
+        this.obstacle = null;
     }
 
     startLevel (){
@@ -19,12 +22,23 @@ class Level{
     reset (){
         this.gameisRunning = false;
     }
+
+    paintPlatform (){
+        this.character.paint();
+        for(let i = 0; i < this.platforms.length; i++)
+            this.platforms[i].paint();
+        for(let j = 0; j < this.points.length; j++)
+            this.points[j].paint();
+        this.door.paint();
+        if(this.shoot) this.shoot.paint();
+        if(this.obstacle) this.obstacle.paint();
+    }
     
     runPlatformLogic () {
         const character = this.character;
         character.runLogic();
 
-        character.nextVelX = character.velocityX / (1 + character.friction / 1000 * 16) + character.direction * 0.5;
+        character.nextVelX = character.velocityX / (1 + character.friction / 1000 * 16) + character.direction * 1;
         character.nextVelY = character.velocityY + (character.gravity / 1000 * 16);
     
         character.nextPosX = character.posX + character.nextVelX;
@@ -34,8 +48,8 @@ class Level{
                 character.nextPosX, character.posY, character.width, character.height, platform.row, platform.col, platform.width, platform.height);
             const verticalIntersection = checkIntersection(
                 character.posX, character.nextPosY, character.width, character.height, platform.row, platform.col, platform.width, platform.height);
-            if (verticalIntersection) {
-                
+            
+            if (verticalIntersection) {    
               character.nextVelY = 0;
               character.nextPosY = character.posY;
               character.jumping = false;
@@ -56,6 +70,34 @@ class Level{
         character.velocityY = character.nextVelY;
         character.posX = character.nextPosX;
         character.posY = character.nextPosY;
+
+        if(keys.s in keysDown) {
+            const posX = this.character.posX;
+            const posY = this.character.posY;
+            const width = this.character.width;
+            const height = this.character.height;
+            if(this.character.lastPressed === 'right')
+                this.shoot = new Shoot(this.game, posX + width, posY + height/2, this.character.lastPressed);
+            else this.shoot = new Shoot(this.game, posX - width, posY + height/2, this.character.lastPressed);
+        }
+
+        if(this.obstacle) this.obstacle.runLogic();
+        if(this.shoot) this.shoot.runLogic();
+        let found = false;
+
+        if(this.shoot && this.obstacle){
+            found = checkIntersection(
+            this.shoot.posX, this.shoot.posY, this.shoot.width, this.shoot.height, this.obstacle.posY / GRID_SIZE, this.obstacle.posX / GRID_SIZE, this.obstacle.width, this.obstacle.height);
+            if(found) this.obstacle = null;
+            if(this.shoot.posX === this.game.$canvas.width || this.shoot.posX === 0) this.shoot = null;
+        }
+        const finish = checkIntersection(
+           this.character.posX, this.character.posY, this.character.width, this.character.height, this.door.posY / GRID_SIZE, this.door.posX / GRID_SIZE, this.door.width, this.door.height);
+        
+        if(finish){
+            this.character.image = characterFinish;
+            this.gameisRunning = false;
+        }
     }
 
 }
