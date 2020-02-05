@@ -63,6 +63,8 @@ const point = new Image();
 point.src = './images/apple.png';
 const final = new Image();
 final.src = './images/power.png';
+const fireball = new Image();
+fireball.src = './images/fireball.png';
 
 const context= $canvas.getContext('2d');
 const mWidth = $canvas.width / 2;

@@ -7,7 +7,7 @@ class Level{
         this.obstacles = [];
         this.gameisRunning = true;
         this.door = new Door(game);
-        this.shoot = null;
+        this.shoots = [];
         this.finish = false;
         this.menu = menu;
     }
@@ -32,7 +32,7 @@ class Level{
         for(let j = 0; j < this.points.length; j++)
             this.points[j].paint();
         this.door.paint();
-        if(this.shoot) this.shoot.paint();
+        for(let shoot of this.shoots) shoot.paint();
         for(let obstacle of this.obstacles) obstacle.paint();
     }
     
@@ -78,21 +78,26 @@ class Level{
             const posY = this.character.posY;
             const width = this.character.width;
             const height = this.character.height;
-            if(this.character.lastPressed === 'right')
-                this.shoot = new Shoot(this.game, posX + width, posY + height/2, this.character.lastPressed);
-            else this.shoot = new Shoot(this.game, posX - width, posY + height/2, this.character.lastPressed);
+            if(this.character.lastPressed === 'right'){
+                const shoot = new Shoot(this.game, posX + width, posY + height/2, this.character.lastPressed);
+                this.shoots.push(shoot);
+            } 
+            else {
+                const shoot = new Shoot(this.game, posX - width, posY + height/2, this.character.lastPressed);
+                this.shoots.push(shoot);
+            }
         }
 
-        if(this.shoot) {
-            this.shoot.runLogic();
+        for(let shoot of this.shoots){
+            shoot.runLogic();
             for(let i = 0; i < this.obstacles.length; i++){
                 let found = false;
-                if(this.shoot){
-                    found = checkIntersection(
-                    this.shoot.posX, this.shoot.posY, this.shoot.width, this.shoot.height, this.obstacles[i].posY / GRID_SIZE, this.obstacles[i].posX / GRID_SIZE, this.obstacles[i].width, this.obstacles[i].height);
-                    if(found) this.obstacles.splice(i, 1);
-                    if(this.shoot.posX === this.game.$canvas.width || this.shoot.posX === 0) this.shoot = null;
-                }    
+                found = checkIntersection(
+                shoot.posX, shoot.posY, shoot.width, shoot.height, this.obstacles[i].posY / GRID_SIZE, this.obstacles[i].posX / GRID_SIZE, this.obstacles[i].width, this.obstacles[i].height);
+                if(found) this.obstacles.splice(i, 1);
+                if(shoot.posX === this.game.$canvas.width || shoot.posX === 0) {
+                    this.shoots.splice(i, 1);
+                }   
             }
         }
 
