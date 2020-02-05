@@ -1,92 +1,145 @@
-class Intro{
-    constructor(canvas){
-        this.$canvas = canvas;
-        this.context= canvas.getContext('2d');
+class Menu{
+    constructor($canvas){
+        this.$canvas = $canvas;
+        this.context = this.$canvas.getContext('2d');
         this.posX = 0;
         this.posY = 0;
-        this.buttonStart = {
-            x:mWidth - 100,
-            y:mHeight + 50,
-            width:200,
-            height:100
-        };
-        this.arrowLeft = {
-            x:100,
-            y:150,
-            width:150,
-            height:150
-        };
-        this.arrowRight = {
-            x:570,
-            y:150,
-            width:150,
-            height:150
-        };
         this.count = 0;
-        this.mWidth = this.canvas.width / 2;
-        this.mHeight = 300;
+        this.i = 0;
+        this.runningMenu = true;
+        this.runningLevels = false;
+        this.beginMenu();
+        this.setButtons();
+        this.locked = [];
+        this.locked.push(5);
+        this.locked.push(4);
+        this.locked.push(3);
+        this.locked.push(2);
+        this.game = new Game(this.$canvas, this);
     }
 
-    getMousePos(event) {
-        var rect = this.$canvas.getBoundingClientRect();
-        this.posX = event.clientX - rect.left;
-        this.posY = event.clientY - rect.top;
+    beginMenu(){
+        arrayMusic[0].play();
+        window.addEventListener(('load'), (image) => {
+            this.drawBeginMenu(raymanF);
+        });
+    }
+
+    clearScreen (){
+        this.context.clearRect(0, 0, this.$canvas.width, this.$canvas.height);
+    }
+
+    drawBeginMenu (image){
+        this.clearScreen();
+        this.context.fillStyle = 'black';
+        this.context.fillRect(0, 0, this.$canvas.width, this.$canvas.height);
+        this.context.fillStyle = 'grey';
+        this.context.fillRect(mWidth - 100, mHeight + 50, 200, 100);
+        this.context.fillStyle = 'white';
+        this.context.font = '48px verdana';
+        this.context.fillText('START', mWidth - 70, mHeight + 110);
+        this.context.drawImage(arrow, 100, 150, 150, 150);
+        this.context.drawImage(arrowMirror, 570, 150, 150, 150);
+        if(image === raymanF)
+            this.context.drawImage(image, 290, 150, 200, 200);
+        else
+            this.context.drawImage(image, 250, 150, 300, 200);
     }
 
     isInside(pos, rect){
         return pos.x > rect.x && pos.x < rect.x+rect.width && pos.y < rect.y+rect.height && pos.y > rect.y
     }
 
-    drawButton(){
-        context.fillStyle = 'black';
-        context.fillRect(0, 0, $canvas.width, $canvas.height);
-        context.fillStyle = 'grey';
-        context.fillRect(mWidth - 100, mHeight + 50, 200, 100);
-        context.fillStyle = 'white';
-        context.font = '48px serif';
-        context.fillText('START', mWidth - 70, mHeight + 110);  
-        window.addEventListener(('load'), (image) => {
-            context.drawImage(arrow, 100, 150, 150, 150);
-            context.drawImage(arrowMirror, 570, 150, 150, 150);
-            context.drawImage(raymanF, 250, 150, 300, 200);
-        });
+    changeMenu(id){
+        if(id === 1) {
+            this.runningMenu = false;
+            this.runningLevels = true;
+            this.drawLevelsMenu();
+        } else if(id === 2){
+            this.runningLevels = false;
+            this.runningMenu = true;
+            this.drawBeginMenu(raymanF);
+        }
     }
 
-    drawEverything (image){
-        context.clearRect(0, 0, $canvas.width, $canvas.height);
-        context.fillStyle = 'black';
-        context.fillRect(0, 0, $canvas.width, $canvas.height);
-        context.fillStyle = 'grey';
-        context.fillRect(mWidth - 100, mHeight + 50, 200, 100);
-        context.fillStyle = 'white';
-        context.font = '48px serif';
-        context.fillText('START', mWidth - 70, mHeight + 110);
-        context.drawImage(arrow, 100, 150, 150, 150);
-        context.drawImage(arrowMirror, 570, 150, 150, 150);
-        context.drawImage(image, 250, 150, 300, 200);
-    }
+    setButtons(){
+        this.$canvas.addEventListener('click', (evt) => {
+            
+            var rect = this.$canvas.getBoundingClientRect();
+            var mousePos = {
+                x: event.clientX - rect.left,
+                y: event.clientY - rect.top
+            };
 
-    setButtons (){
-        this.$canvas.addEventListener('click', function(evt) {
-            var mousePos = this.getMousePos(evt);
-            arrayMusic[this.count].pause();
-            if (this.isInside(mousePos, this.buttonStart)) {
-            }else if(this.isInside(this.mousePos, this.arrowLeft)) {
-                if(i > 0){
-                    this.drawEverything(arrayImages[--this.count]);
-                } else {
-                    this.count= arrayImages.length - 1;
-                    this.drawEverything(arrayImages[this.count]);
+            if(this.runningMenu){
+                arrayMusic[this.i].pause();
+                if (this.isInside(mousePos,buttonStart)) {
+                    this.changeMenu(1);
+                    //this.loop();
+                }else if(this.isInside(mousePos,arrowLeft)) {
+                    if(this.i > 0){
+                        this.drawBeginMenu(arrayImages[--this.i]);
+                    } else {
+                        this.i = arrayImages.length - 1;
+                        this.drawBeginMenu(arrayImages[this.i]);
+                    }
+                }else if(this.isInside(mousePos,arrowRight)){
+                    if(this.i < arrayImages.length - 1){
+                        this.drawBeginMenu(arrayImages[++this.i]);
+                    } else {
+                        this.i = 0;
+                        this.drawBeginMenu(arrayImages[this.i]);
+                    }
                 }
-            }else if(isInside(this.mousePos, this.arrowRight)){
-                if(this.count < arrayImages.length - 1){
-                    this.drawEverything(arrayImages[++this.count]);
-                } else {
-                    this.count = 0;
-                    this.drawEverything(arrayImages[this.count]);
+                arrayMusic[this.i].play();
+            }
+            if(this.runningLevels){
+                let idLevel = 0;
+                if (this.isInside(mousePos,level1)) {
+                    idLevel = 1;
+                }else if(this.isInside(mousePos,level2) /*&& !this.locked.includes(2))*/) {
+                    console.log('ola');
+                    idLevel = 2;
+                }else if(this.isInside(mousePos,level3) /*&& !this.locked.includes(3)*/){
+                    idLevel = 3;
+                }else if(this.isInside(mousePos,level4) /*&& !this.locked.includes(4)*/){
+                    idLevel = 4;
+                }else if(this.isInside(mousePos,level5) /*&& !this.locked.includes(5)*/){
+                    idLevel = 5;
+                }else if(this.isInside(mousePos,arrowChange)){
+                    this.changeMenu(2);
+                }
+                if(idLevel != 0){
+                    this.game.resetGame();
+                    this.game.startLevel(idLevel);
                 }
             }
-            arrayMusic[this.count].play();
         }, false);
-    } 
+    }
+
+    drawLevelsMenu (){
+        this.clearScreen();   
+        this.context.fillStyle = 'grey';
+        this.context.font = '70px verdana';
+        this.context.fillText('LEVELS', mWidth - 120, 100);   
+        this.context.drawImage(arrowBack, 40, 30, 80, 80);
+        this.context.drawImage(backgroundOne, 115, 250, 100, 100);
+        this.context.drawImage(backFive, 235, 250, 100, 100);
+        //if(this.locked.includes(2))
+            this.context.drawImage(padlock, 260, 270, 50, 50);
+        this.context.drawImage(backSeven, 355, 250, 100, 100);
+        //if(this.locked.includes(3))
+            this.context.drawImage(padlock, 380, 270, 50, 50);
+        this.context.drawImage(backTwo, 475, 250, 100, 100);
+        //if(this.locked.includes(4))
+            this.context.drawImage(padlock, 500, 270, 50, 50);
+        this.context.drawImage(backgroundOne, 595, 250, 100, 100); 
+        //if(this.locked.includes(5))
+            this.context.drawImage(padlock, 620, 270, 50, 50);
+    }
+    
+    /*loop (timestamp) {
+        this.drawLevelsMenu();
+        window.requestAnimationFrame((timestamp) => this.loop(timestamp));
+    }*/
 }

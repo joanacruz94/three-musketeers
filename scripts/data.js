@@ -2,20 +2,25 @@ const MAX_ROW = 12;
 const MAX_COL = 16;
 const GRID_SIZE = 50;
 const directions = Object.freeze({"right":1, "left":2, "up":3, "down":4});
-const collisionPadding = 10;
-var gravitySpeed = 0.3;
+//const collisionPadding = 10;
+
+const $canvas = document.querySelector('canvas');
 
 
 const audio = new Audio('./audio/rayman.mp3');
 const audio1 = new Audio('./audio/jak.mp3');
 const audio2 = new Audio('./audio/crash.mp3');
 
+const padlock = new Image();
+padlock.src = './images/lock.png';
 const arrow = new Image();
 arrow.src = './images/arrow.png';
+const arrowBack = new Image();
+arrowBack.src = './images/arrowBack.png';
+const pinkMonster = new Image();
+pinkMonster.src = './images/pink.png';
 const jack = new Image();
 jack.src = './images/jack.png';
-const jackOne = new Image();
-jackOne.src = './images/jackOne.png';
 const raymanF = new Image();
 raymanF.src = './images/rayMana.png';
 const crash = new Image();
@@ -59,7 +64,74 @@ point.src = './images/apple.png';
 const final = new Image();
 final.src = './images/power.png';
 
-/****** ARRAYS ******/
+const context= $canvas.getContext('2d');
+const mWidth = $canvas.width / 2;
+const mHeight = 300;
+
+const buttonStart = {
+    x:mWidth - 100,
+    y:mHeight + 50,
+    width:200,
+    height:100
+};
+
+const arrowLeft = {
+    x:100,
+    y:150,
+    width:150,
+    height:150
+};
+
+const arrowRight = {
+    x:570,
+    y:150,
+    width:150,
+    height:150
+};
+
+
+const level1 = {
+    x:115,
+    y:250,
+    width:100,
+    height:100
+};
+
+const level2 = {
+    x:235,
+    y:250,
+    width:100,
+    height:100
+};
+
+const level3 = {
+    x:355,
+    y:250,
+    width:100,
+    height:100
+};
+
+const level4 = {
+    x:475,
+    y:250,
+    width:100,
+    height:100
+};
+
+const level5 = {
+    x:595,
+    y:250,
+    width:100,
+    height:100
+};
+
+const arrowChange = {
+    x:40,
+    y:30,
+    width:80,
+    height:80
+};
+
 const arrayImages = [];
 arrayImages.push(raymanF);
 arrayImages.push(jack);

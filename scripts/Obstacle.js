@@ -1,14 +1,16 @@
 class Obstacle{
-    constructor (game){
+    constructor (game, posX, posY, width, height, image, direction){
         this.game = game;
-        this.posX = 250;
-        this.posY = 0;
-        this.width = 100;
-        this.height = 100;
+        this.posX = posX;
+        this.posY = posY;
+        this.width = width;
+        this.height = height;
         this.xSpeed = 1;
-        this.ySpeed = 1;
-        this.direction = 'right';
-        this.imageLook = false
+        this.ySpeed = -1;
+        this.direction = direction;
+        this.image = image;
+        this.distance = 100;
+        this.prevY = this.posY;
     }
 
     runLogic (){
@@ -24,6 +26,21 @@ class Obstacle{
         }
     }
 
+    move (){
+        this.posY += this.ySpeed;
+
+        if (this.posY < 20) {
+            this.ySpeed *= -1;
+        }
+        else if(this.posY + this.height === this.prevY + this.height){
+            this.ySpeed *= -1;
+        }
+    }
+
+    moveLeft (){
+        this.posX -= 1;
+    }
+
     paint (){
         const context = this.game.context;
 
@@ -31,10 +48,10 @@ class Obstacle{
         
         if(this.xSpeed < 0) {
             context.scale(-1, 1);
-            context.drawImage(monster, -this.posX - this.width, this.posY, this.width, this.height);
+            context.drawImage(this.image, -this.posX - this.width, this.posY, this.width, this.height);
         }
         else{
-            context.drawImage(monster, this.posX, this.posY, this.width, this.height);
+            context.drawImage(this.image, this.posX, this.posY, this.width, this.height);
         }
 
         context.restore();

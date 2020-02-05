@@ -7,7 +7,6 @@ class Platform{
         this.height = height;
         this.image = image;
         this.xSpeed = 0.3;
-        this.lastFrameTimestamp = 0;
         this.angle = 0;
         this.dir = 0.01;
     }

@@ -1,14 +1,13 @@
 class Game{
-    constructor($canvas){
+    constructor($canvas, menu){
         this.$canvas = $canvas;
         this.context = this.$canvas.getContext('2d');
-        this.levels = [];
-        this.levelOne = new LevelOne(this);
-        this.levelTwo = new LevelTwo(this);
-        this.levelThree = new LevelThree(this);
-        this.levelFour = new LevelFour(this);
-        this.levelFive = new LevelFive(this);
-     
+        this.menu = menu;
+        this.levelOne = new LevelOne(this, this.menu);
+        this.levelTwo = new LevelTwo(this, this.menu);
+        this.levelThree = new LevelThree(this, this.menu);
+        this.levelFour = new LevelFour(this, this.menu);
+        this.levelFive = new LevelFive(this, this.menu);
     }
 
     resetGame() {

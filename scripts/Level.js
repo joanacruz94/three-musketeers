@@ -1,13 +1,15 @@
 class Level{
-    constructor(game){
+    constructor(game, menu){
         this.game = game;
         this.character = new Character(this.game);
         this.platforms = [];
         this.points = [];
+        this.obstacles = [];
         this.gameisRunning = true;
         this.door = new Door(game);
         this.shoot = null;
-        this.obstacle = null;
+        this.finish = false;
+        this.menu = menu;
     }
 
     startLevel (){
@@ -31,7 +33,7 @@ class Level{
             this.points[j].paint();
         this.door.paint();
         if(this.shoot) this.shoot.paint();
-        if(this.obstacle) this.obstacle.paint();
+        for(let obstacle of this.obstacles) obstacle.paint();
     }
     
     runPlatformLogic () {
@@ -71,7 +73,7 @@ class Level{
         character.posX = character.nextPosX;
         character.posY = character.nextPosY;
 
-        if(keys.s in keysDown) {
+        if(keys.shoot in keysDown) {
             const posX = this.character.posX;
             const posY = this.character.posY;
             const width = this.character.width;
@@ -81,22 +83,49 @@ class Level{
             else this.shoot = new Shoot(this.game, posX - width, posY + height/2, this.character.lastPressed);
         }
 
-        if(this.obstacle) this.obstacle.runLogic();
-        if(this.shoot) this.shoot.runLogic();
-        let found = false;
-
-        if(this.shoot && this.obstacle){
-            found = checkIntersection(
-            this.shoot.posX, this.shoot.posY, this.shoot.width, this.shoot.height, this.obstacle.posY / GRID_SIZE, this.obstacle.posX / GRID_SIZE, this.obstacle.width, this.obstacle.height);
-            if(found) this.obstacle = null;
-            if(this.shoot.posX === this.game.$canvas.width || this.shoot.posX === 0) this.shoot = null;
+        if(this.shoot) {
+            this.shoot.runLogic();
+            for(let i = 0; i < this.obstacles.length; i++){
+                let found = false;
+                if(this.shoot){
+                    found = checkIntersection(
+                    this.shoot.posX, this.shoot.posY, this.shoot.width, this.shoot.height, this.obstacles[i].posY / GRID_SIZE, this.obstacles[i].posX / GRID_SIZE, this.obstacles[i].width, this.obstacles[i].height);
+                    if(found) this.obstacles.splice(i, 1);
+                    if(this.shoot.posX === this.game.$canvas.width || this.shoot.posX === 0) this.shoot = null;
+                }    
+            }
         }
-        const finish = checkIntersection(
+
+        for (let i = 0; i < this.obstacles.length; i++) {
+            let lost = false;
+            lost = checkIntersection(
+                this.character.posX, this.character.posY, this.character.width, this.character.height, this.obstacles[i].posY / GRID_SIZE, this.obstacles[i].posX / GRID_SIZE, this.obstacles[i].width, this.obstacles[i].height);
+            if(lost) {
+                window.alert("YOU LOST");
+                this.gameisRunning = false;
+            }
+        }
+
+        this.finish = checkIntersection(
            this.character.posX, this.character.posY, this.character.width, this.character.height, this.door.posY / GRID_SIZE, this.door.posX / GRID_SIZE, this.door.width, this.door.height);
         
-        if(finish){
+        if(this.finish || keys.escape in keysDown){
             this.character.image = characterFinish;
             this.gameisRunning = false;
+        }
+    }
+
+    loop (timestamp) {
+        //console.log('TIMESTAMP', timestamp);
+        this.runLogic();
+        this.paint();
+        
+        if(this.gameisRunning){
+            window.requestAnimationFrame((timestamp) => this.loop(timestamp));
+        }
+        else {
+            this.menu.changeMenu(1);
+            this.menu.locked.pop();
         }
     }
 

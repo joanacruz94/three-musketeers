@@ -1,6 +1,6 @@
 class LevelOne extends Level{
-    constructor(game){
-        super(game);
+    constructor(game, menu){
+        super(game, menu);
         this.platform = new Platform(game, 9, 3, 100, 50, pattern);
         this.platform1 = new Platform(game, 7, 6, 100, 50, pattern);
         this.platform2 = new Platform(game, 5, 9, 100, 50, pattern);
@@ -13,7 +13,6 @@ class LevelOne extends Level{
         this.loadData();
         this.door.setPosX(320);
         this.door.setPosY(30);
-        this.obstacle = new Obstacle(this.game); 
     }
 
     loadData (){
@@ -26,10 +25,13 @@ class LevelOne extends Level{
         this.points.push(this.point2);
         this.points.push(this.point3);
         this.points.push(this.point4);
+        const obstacle = new Obstacle(this.game, 250, 0, 70, 100, monster, 'right'); 
+        this.obstacles.push(obstacle);
     }
 
     runLogic (){
         this.runPlatformLogic();
+        for(let obstacle of this.obstacles) obstacle.runLogic(); 
     }
 
     paint (){
@@ -41,13 +43,4 @@ class LevelOne extends Level{
         this.paintPlatform();
     }
 
-    loop (timestamp) {
-        //console.log('TIMESTAMP', timestamp);
-        this.runLogic();
-        this.paint();
-        
-        if(this.gameisRunning){
-            window.requestAnimationFrame((timestamp) => this.loop(timestamp));
-        }
-    }
 }

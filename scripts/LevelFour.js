@@ -1,6 +1,6 @@
 class LevelFour extends Level{
-    constructor(game){
-        super(game);
+    constructor(game, menu){
+        super(game, menu);
         this.character.matter = false;
         this.loadData();
     }
@@ -45,15 +45,10 @@ class LevelFour extends Level{
             platform.moveDown();
         for(let point of this.points)
             point.moveDown();
-    }
-
-    loop (timestamp) {
-        //console.log('TIMESTAMP', timestamp);
-        this.runLogic();
-        this.paint();
-        
-        if(this.gameisRunning){
-            window.requestAnimationFrame((timestamp) => this.loop(timestamp));
+        if(this.character.posY > this.game.$canvas.height){
+            window.alert("YOU LOST");
+            this.gameisRunning = false;
         }
     }
+
 }
