@@ -19,38 +19,6 @@ class Platform{
         this.row += 0.02;
     }
 
-    /*movePlatform(){
-        window.setTimeout(() => {
-            this.row += this.dir;
-            if(this.row < 3 || this.row > 10){
-                this.dir *= -1;
-            }
-            
-            this.angle += this.dir;
-            if(this.angle > 45){
-                //this.dir *= -1;
-                this.dir *= -1;
-                this.exp *= -1;
-            } if(this.angle < -45){
-                this.dir *= -1;
-               this.exp *= -1;
-            }
-
-        }, 200);
-    }
-
-    paintTransform (){
-        const context = this.game.context;
-
-        context.save();
-        context.translate(this.col * GRID_SIZE, this.row * GRID_SIZE);
-        context.rotate(this.angle * Math.PI /180);
-        context.translate(-this.width/2, -this.height/2);
-        console.log(this.col * GRID_SIZE * this.angle * Math.PI /180 - this.width/2);
-        context.drawImage(this.image, this.col * GRID_SIZE, this.row * GRID_SIZE, this.width, this.height);
-        context.restore();
-    }*/
-
     paint (){
         const context = this.game.context;
 

@@ -1,7 +1,6 @@
 const MAX_ROW = 12;
 const MAX_COL = 16;
 const GRID_SIZE = 50;
-const directions = Object.freeze({"right":1, "left":2, "up":3, "down":4});
 //const collisionPadding = 10;
 
 const $canvas = document.querySelector('canvas');
@@ -17,18 +16,12 @@ const arrow = new Image();
 arrow.src = './images/arrow.png';
 const arrowBack = new Image();
 arrowBack.src = './images/arrowBack.png';
-const pinkMonster = new Image();
-pinkMonster.src = './images/pink.png';
 const jack = new Image();
 jack.src = './images/jack.png';
 const raymanF = new Image();
 raymanF.src = './images/rayMana.png';
 const crash = new Image();
 crash.src = './images/crash.png';
-const frog = new Image();
-frog.src = './images/sapo.png';
-const tromba = new Image();
-tromba.src = './images/tromba.png';
 const arrowMirror = new Image();
 arrowMirror.src = './images/arrowMirrow.png';
 const background = new Image();
@@ -47,24 +40,46 @@ const backSeven = new Image();
 backSeven.src = './images/back7.jpg';
 const snowFlake = new Image();
 snowFlake.src = './images/snowflake.png';
-const characterPaused = new Image();
-characterPaused.src = './images/rayman1.png';
-const characterRunning = new Image();
-characterRunning.src = './images/rayman.png';
-const characterFinish = new Image();
-characterFinish.src = './images/rayman2.png';
-const monster = new Image();
-monster.src = './images/monster.png';
+const fireball = new Image();
+fireball.src = './images/fireball.png';
 const pattern = new Image();
 pattern.src = './images/pattern.png';
 const icePattern = new Image();
 icePattern.src = './images/icePattern.jpg';
-const point = new Image();
-point.src = './images/apple.png';
-const final = new Image();
-final.src = './images/power.png';
-const fireball = new Image();
-fireball.src = './images/fireball.png';
+
+
+/***** DATA FOR RAYMAN *****/
+const r1 = './images/rayman1.png';
+const r2 = './images/rayman.png';
+const r3 = './images/rayman2.png';
+const r4 = './images/lums.png';
+const r5 = './images/sapo.png';
+const r6 = './images/monster.png';
+const r7 = './images/pink.png';
+const r8 = './images/tromba.png';
+
+/***** DATA FOR JAK *****/
+const j1 = './images/jakk.png';
+const j2 = './images/jakkk.png';
+const j3 = './images/jakk.png';
+const j4 = './images/egg.png';
+const j5 = './images/power.png';
+const j6 = './images/monster.png';
+const j7 = './images/pink.png';
+const j8 = './images/tromba.png';
+
+/***** DATA FOR BANDICOOT *****/
+
+const c1 = './images/crashh.png';
+const c2 = './images/crashGoing.png';
+const c3 = './images/crashh.png';
+const c4 = './images/apple.png';
+const c5 = './images/boxx.png';
+const c6 = './images/monster.png';
+const c7 = './images/tnt.png';
+const c8 = './images/tromba.png';
+
+/**********************************************/
 
 const context= $canvas.getContext('2d');
 const mWidth = $canvas.width / 2;

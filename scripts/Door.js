@@ -1,10 +1,11 @@
 class Door{
-    constructor (game){
+    constructor (game, image){
         this.game = game;
         this.posX = 0;
         this.posY = 0;
         this.width = 50;
         this.height = 50;
+        this.image = image;
     }
 
     setPosX(posX){
@@ -24,7 +25,7 @@ class Door{
 
         context.save();
         
-        context.drawImage(final, this.posX, this.posY, this.width, this.height);
+        context.drawImage(this.image, this.posX, this.posY, this.width, this.height);
 
         context.restore();
     }

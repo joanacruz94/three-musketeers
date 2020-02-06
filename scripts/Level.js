@@ -1,12 +1,13 @@
 class Level{
-    constructor(game, menu){
+    constructor(game, menu, parser){
         this.game = game;
-        this.character = new Character(this.game);
+        this.parser = parser;
+        this.character = new Character(this.game, this.parser);
         this.platforms = [];
         this.points = [];
         this.obstacles = [];
         this.gameisRunning = true;
-        this.door = new Door(game);
+        this.door = new Door(game, this.parser.door);
         this.shoots = [];
         this.finish = false;
         this.menu = menu;
@@ -114,8 +115,15 @@ class Level{
         this.finish = checkIntersection(
            this.character.posX, this.character.posY, this.character.width, this.character.height, this.door.posY / GRID_SIZE, this.door.posX / GRID_SIZE, this.door.width, this.door.height);
         
-        if(this.finish || keys.escape in keysDown){
-            this.character.image = characterFinish;
+        if(this.finish){
+            this.character.image = this.parser.characterFinished;
+            window.alert('YOU PASSED');
+            this.gameisRunning = false;
+            this.game.levelAgain(1);
+            let x = this.menu.locked.pop();
+        }
+
+        if(keys.escape in keysDown){
             this.gameisRunning = false;
         }
     }
@@ -130,7 +138,6 @@ class Level{
         }
         else {
             this.menu.changeMenu(1);
-            this.menu.locked.pop();
         }
     }
 

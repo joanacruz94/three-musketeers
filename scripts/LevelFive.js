@@ -1,6 +1,6 @@
 class LevelFive extends Level{
-    constructor(game, menu){
-        super(game, menu);
+    constructor(game, menu, parser){
+        super(game, menu, parser);
     }
 
     paint (){

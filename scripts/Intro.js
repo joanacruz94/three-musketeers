@@ -15,7 +15,8 @@ class Menu{
         this.locked.push(4);
         this.locked.push(3);
         this.locked.push(2);
-        this.game = new Game(this.$canvas, this);
+        this.parser = new Parser();
+        this.game = new Game(this.$canvas, this, this.parser);
     }
 
     beginMenu(){
@@ -50,6 +51,16 @@ class Menu{
         return pos.x > rect.x && pos.x < rect.x+rect.width && pos.y < rect.y+rect.height && pos.y > rect.y
     }
 
+    parseFilesCharacter (){
+        if(this.i === 0){
+            this.parser.load(r1, r2, r3, r4, r5, r6, r7, r8);
+        }else if(this.i === 1){
+            this.parser.load(j1, j2, j3, j4, j5, j6, j7, j8);
+        }else if(this.i === 2){
+            this.parser.load(c1, c2, c3, c4, c5, c6, c7, c8);
+        }
+    }
+
     changeMenu(id){
         if(id === 1) {
             this.runningMenu = false;
@@ -75,6 +86,7 @@ class Menu{
                 arrayMusic[this.i].pause();
                 if (this.isInside(mousePos,buttonStart)) {
                     this.changeMenu(1);
+                    this.parseFilesCharacter();
                     //this.loop();
                 }else if(this.isInside(mousePos,arrowLeft)) {
                     if(this.i > 0){
@@ -97,20 +109,19 @@ class Menu{
                 let idLevel = 0;
                 if (this.isInside(mousePos,level1)) {
                     idLevel = 1;
-                }else if(this.isInside(mousePos,level2) /*&& !this.locked.includes(2))*/) {
-                    console.log('ola');
+                }else if(this.isInside(mousePos,level2) && !this.locked.includes(2)){
                     idLevel = 2;
-                }else if(this.isInside(mousePos,level3) /*&& !this.locked.includes(3)*/){
+                }else if(this.isInside(mousePos,level3) && !this.locked.includes(3)){
                     idLevel = 3;
-                }else if(this.isInside(mousePos,level4) /*&& !this.locked.includes(4)*/){
+                }else if(this.isInside(mousePos,level4) && !this.locked.includes(4)){
                     idLevel = 4;
-                }else if(this.isInside(mousePos,level5) /*&& !this.locked.includes(5)*/){
+                }else if(this.isInside(mousePos,level5) && !this.locked.includes(5)){
                     idLevel = 5;
                 }else if(this.isInside(mousePos,arrowChange)){
                     this.changeMenu(2);
                 }
                 if(idLevel != 0){
-                    this.game.resetGame();
+                    this.game.levelAgain(idLevel);
                     this.game.startLevel(idLevel);
                 }
             }
@@ -125,21 +136,17 @@ class Menu{
         this.context.drawImage(arrowBack, 40, 30, 80, 80);
         this.context.drawImage(backgroundOne, 115, 250, 100, 100);
         this.context.drawImage(backFive, 235, 250, 100, 100);
-        //if(this.locked.includes(2))
+        if(this.locked.includes(2))
             this.context.drawImage(padlock, 260, 270, 50, 50);
         this.context.drawImage(backSeven, 355, 250, 100, 100);
-        //if(this.locked.includes(3))
+        if(this.locked.includes(3))
             this.context.drawImage(padlock, 380, 270, 50, 50);
         this.context.drawImage(backTwo, 475, 250, 100, 100);
-        //if(this.locked.includes(4))
+        if(this.locked.includes(4))
             this.context.drawImage(padlock, 500, 270, 50, 50);
         this.context.drawImage(backgroundOne, 595, 250, 100, 100); 
-        //if(this.locked.includes(5))
+        if(this.locked.includes(5))
             this.context.drawImage(padlock, 620, 270, 50, 50);
     }
     
-    /*loop (timestamp) {
-        this.drawLevelsMenu();
-        window.requestAnimationFrame((timestamp) => this.loop(timestamp));
-    }*/
 }

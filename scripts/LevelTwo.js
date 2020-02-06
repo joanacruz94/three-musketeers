@@ -1,6 +1,6 @@
 class LevelTwo extends Level{
-    constructor(game, menu){
-        super(game, menu);
+    constructor(game, menu, parser){
+        super(game, menu, parser);
         this.posXBack = 0;
         this.speed = 2.5;
         this.character.matter = false;
@@ -23,29 +23,29 @@ class LevelTwo extends Level{
             }
             if(count === 0){
                 platform = new Platform(this.game, 9, i * 4 + 5, 150, 50, pattern);
-                point = new Point(this.game, 9 - 1, i * 4 + 5 + 1);
+                point = new Point(this.game, 9 - 1, i * 4 + 5 + 1, this.parser.point);
             }
             else if(count === 1){
                 platform = new Platform(this.game, 7, i * 4 + 5, 150, 50, pattern);
-                point = new Point(this.game, 7 - 1, i * 4 + 5 + 1);
-                obstacle = new Obstacle(this.game, (i * 4 + 6) * GRID_SIZE, 6.1 * GRID_SIZE, 45, 45, pinkMonster, 'left');
+                point = new Point(this.game, 7 - 1, i * 4 + 5 + 1, this.parser.point);
+                obstacle = new Obstacle(this.game, (i * 4 + 6) * GRID_SIZE, 6.1 * GRID_SIZE, 45, 45, this.parser.monsterLevel2, 'left');
             }
             else if(count === 2){
                 platform = new Platform(this.game, 5, i * 4 + 5, 150, 50, pattern);
-                point = new Point(this.game, 5 - 1, i * 4 + 5 + 1);
+                point = new Point(this.game, 5 - 1, i * 4 + 5 + 1, this.parser.point);
             }
             else if(count === 3){
                 platform = new Platform(this.game, 3, i * 4 + 5, 150, 50, pattern);
-                point = new Point(this.game, 3 - 1, i * 4 + 5 + 1);
-                obstacle = new Obstacle(this.game, (i * 4 + 6) * GRID_SIZE, 2.1 * GRID_SIZE, 45, 45, pinkMonster, 'left');
+                point = new Point(this.game, 3 - 1, i * 4 + 5 + 1, this.parser.point);
+                obstacle = new Obstacle(this.game, (i * 4 + 6) * GRID_SIZE, 2.1 * GRID_SIZE, 45, 45, this.parser.monsterLevel2, 'left');
             }
             else if(count === 4){
                 platform = new Platform(this.game, 5, i * 4 + 5, 150, 50, pattern);
-                point = new Point(this.game, 5 - 1, i * 4 + 5 + 1);
+                point = new Point(this.game, 5 - 1, i * 4 + 5 + 1, this.parser.point);
             }
             else if(count === 5){
                 platform = new Platform(this.game, 7, i * 4 + 5, 150, 50, pattern);
-                point = new Point(this.game, 7 - 1, i * 4 + 5 + 1);
+                point = new Point(this.game, 7 - 1, i * 4 + 5 + 1, this.parser.point);
             }
             this.platforms.push(platform);
             this.points.push(point);
@@ -84,6 +84,12 @@ class LevelTwo extends Level{
         if(this.character.posY > this.game.$canvas.height){
             window.alert("YOU LOST");
             this.gameisRunning = false;
+        }
+        if(this.finish){
+            this.character.image = this.parser.characterFinished;
+            window.alert('YOU PASSED');
+            this.gameisRunning = false;
+            this.game.levelAgain(2);
         }
     }
 

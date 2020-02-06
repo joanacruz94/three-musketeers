@@ -1,8 +1,8 @@
 class Character {
-  constructor (game) {
+  constructor (game, parser) {
     this.game = game;
-    this.width = 60;
-    this.height = 60;
+    this.width = 70;
+    this.height = 70;
     this.posX = 120;
     this.posY = this.game.$canvas.height - this.height;
     this.velocityX = 0;
@@ -13,7 +13,8 @@ class Character {
     this.nextVelY = 0;
     this.nextPosX = 0;
     this.nextPosY = 0;
-    this.image = characterPaused;
+    this.parser = parser;
+    this.image = parser.characterPaused;
     this.jumping = false;
     this.direction = 0;
     this.lastPressed = 'right';
@@ -38,15 +39,15 @@ class Character {
   runLogic() {
     if (keys.right in keysDown){
       this.direction = 1;
-      this.image = characterRunning;
+      this.image = this.parser.characterRunning;
       this.lastPressed = 'right';
     } else if (keys.left in keysDown){
       this.direction = -1;
-      this.image = characterRunning;
+      this.image = this.parser.characterRunning;
       this.lastPressed = 'left';
     }
     else {
-      this.image = characterPaused; 
+      this.image = this.parser.characterPaused; 
       this.direction = 0;
     }
 
