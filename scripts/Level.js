@@ -11,6 +11,9 @@ class Level{
         this.shoots = [];
         this.finish = false;
         this.menu = menu;
+        this.allPoints = false;
+        this.idLevel = 0;
+        this.movingPlatforms = false;
     }
 
     startLevel (){
@@ -52,14 +55,14 @@ class Level{
             const verticalIntersection = checkIntersection(
                 character.posX, character.nextPosY, character.width, character.height, platform.row, platform.col, platform.width, platform.height);
             
-            if (verticalIntersection) {    
-              character.nextVelY = 0;
-              character.nextPosY = character.posY;
-              character.jumping = false;
+            if (verticalIntersection) {   
+                character.nextVelY = 0;
+                character.nextPosY = character.posY;
+                character.jumping = false;
             }
             if (horizontalIntersection) {
-              character.nextVelX = 0;
-              character.nextPosX = character.posX;
+                character.nextVelX = 0;
+                character.nextPosX = character.posX;
             }
         }
 
@@ -87,18 +90,25 @@ class Level{
                 const shoot = new Shoot(this.game, posX - width, posY + height/2, this.character.lastPressed);
                 this.shoots.push(shoot);
             }
+            delete keysDown[83];
         }
 
-        for(let shoot of this.shoots){
-            shoot.runLogic();
+        for(let j = 0; j < this.shoots.length; j++){
+            this.shoots[j].runLogic();
             for(let i = 0; i < this.obstacles.length; i++){
                 let found = false;
-                found = checkIntersection(
-                shoot.posX, shoot.posY, shoot.width, shoot.height, this.obstacles[i].posY / GRID_SIZE, this.obstacles[i].posX / GRID_SIZE, this.obstacles[i].width, this.obstacles[i].height);
-                if(found) this.obstacles.splice(i, 1);
-                if(shoot.posX === this.game.$canvas.width || shoot.posX === 0) {
-                    this.shoots.splice(i, 1);
-                }   
+                if(this.shoots[j]){
+                    found = checkIntersection(
+                        this.shoots[j].posX, this.shoots[j].posY, this.shoots[j].width, this.shoots[j].height, this.obstacles[i].posY / GRID_SIZE, this.obstacles[i].posX / GRID_SIZE, this.obstacles[i].width, this.obstacles[i].height);
+                    if(this.shoots[j].posX === this.game.$canvas.width || this.shoots[j].posX === 0) {
+                        
+                        this.shoots.splice(j, 1);
+                    }   
+                    if(found) {
+                        this.shoots.splice(j, 1);
+                        this.obstacles.splice(i, 1);
+                    }
+                }
             }
         }
 
@@ -107,29 +117,32 @@ class Level{
             lost = checkIntersection(
                 this.character.posX, this.character.posY, this.character.width, this.character.height, this.obstacles[i].posY / GRID_SIZE, this.obstacles[i].posX / GRID_SIZE, this.obstacles[i].width, this.obstacles[i].height);
             if(lost) {
+                keysDown = new Array();
                 window.alert("YOU LOST");
                 this.gameisRunning = false;
+                this.game.levelAgain(this.idLevel);
             }
         }
 
         this.finish = checkIntersection(
            this.character.posX, this.character.posY, this.character.width, this.character.height, this.door.posY / GRID_SIZE, this.door.posX / GRID_SIZE, this.door.width, this.door.height);
-        
-        if(this.finish){
-            this.character.image = this.parser.characterFinished;
-            window.alert('YOU PASSED');
-            this.gameisRunning = false;
-            this.game.levelAgain(1);
-            let x = this.menu.locked.pop();
-        }
 
         if(keys.escape in keysDown){
             this.gameisRunning = false;
         }
+
+        if(this.finish){
+            keysDown = new Array();
+            if(this.points.length === 0) this.allPoints = true;
+            this.character.image = this.parser.characterFinished;
+            window.alert("YOU PASSED");
+            this.gameisRunning = false;
+            this.menu.locked.pop();
+            this.game.levelAgain(this.idLevel);
+        }
     }
 
     loop (timestamp) {
-        //console.log('TIMESTAMP', timestamp);
         this.runLogic();
         this.paint();
         

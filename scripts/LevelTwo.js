@@ -5,6 +5,8 @@ class LevelTwo extends Level{
         this.speed = 2.5;
         this.character.matter = false;
         this.loadData();
+        this.idLevel = 2;
+        this.movingPlatforms = true;
     }
 
     loadData (){
@@ -71,23 +73,18 @@ class LevelTwo extends Level{
         if (backFour.width) {
             this.posXBack = this.posXBack % backFour.width;
         } 
-        for(let i = 0; i < this.platforms.length; i++){
-            this.platforms[i].runLogic();
-        }
-
         for(let j = 0; j < this.points.length; j++){
             this.points[j].runLogic();
         }
         this.door.runLogic();
         this.runPlatformLogic();
+        for(let i = 0; i < this.platforms.length; i++){
+            this.platforms[i].runLogic();
+        }
         for(let obstacle of this.obstacles) obstacle.moveLeft();
         if(this.character.posY > this.game.$canvas.height){
+            keysDown = new Array();
             window.alert("YOU LOST");
-            this.gameisRunning = false;
-        }
-        if(this.finish){
-            this.character.image = this.parser.characterFinished;
-            window.alert('YOU PASSED');
             this.gameisRunning = false;
             this.game.levelAgain(2);
         }

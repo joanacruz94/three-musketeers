@@ -20,6 +20,10 @@ class Door{
         this.posX--;
     }
 
+    moveDown (){
+        this.posY += 2;
+    }
+
     paint (){
         const context = this.game.context;
 

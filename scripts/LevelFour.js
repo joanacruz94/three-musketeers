@@ -3,10 +3,11 @@ class LevelFour extends Level{
         super(game, menu, parser);
         this.character.matter = false;
         this.loadData();
+        this.idLevel = 4;
     }
 
     loadData (){
-        for(let i = 0; i < 50; i++){
+        for(let i = 0; i < 20; i++){
             let platform = null;
             let point = null;
             if(i % 2 === 0){
@@ -21,6 +22,11 @@ class LevelFour extends Level{
                 this.character.setPosX(4 * GRID_SIZE);
                 this.character.setPosY(0)
             }
+            if(i === 19) {
+                console.log('ola');
+                this.door.setPosX(11.2 * GRID_SIZE);
+                this.door.setPosY((i * -3 - 2) * GRID_SIZE);
+            }
             this.platforms.push(platform);
             this.points.push(point);
         }
@@ -32,11 +38,7 @@ class LevelFour extends Level{
         context.save();
         context.drawImage(backTwo, 0, 0, this.game.$canvas.width, this.game.$canvas.height);
         context.restore();
-        for(let platform of this.platforms)
-            platform.paint();
-        for(let point of this.points)
-            point.paint();
-        this.character.paint();
+        this.paintPlatform();
     }
 
     runLogic (){
@@ -46,15 +48,12 @@ class LevelFour extends Level{
         for(let point of this.points)
             point.moveDown();
         if(this.character.posY > this.game.$canvas.height){
+            keysDown = new Array();
             window.alert("YOU LOST");
             this.gameisRunning = false;
+            this.game.levelAgain(this.idLevel);
         }
-        if(this.finish){
-            this.character.image = this.parser.characterFinished;
-            window.alert(' YOU PASSED');
-            this.gameisRunning = false;
-            this.game.levelAgain(4);
-        }
+        this.door.moveDown();
     }
 
 }

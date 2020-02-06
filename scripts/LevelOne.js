@@ -13,6 +13,7 @@ class LevelOne extends Level{
         this.loadData();
         this.door.setPosX(320);
         this.door.setPosY(30);
+        this.idLevel = 1;
     }
 
     loadData (){
@@ -31,9 +32,6 @@ class LevelOne extends Level{
 
     runLogic (){
         this.runPlatformLogic();
-        if(this.finish){
-            this.game.levelAgain(1);
-        }
         for(let obstacle of this.obstacles) obstacle.runLogic(); 
     }
 

@@ -56,4 +56,15 @@ class Obstacle{
 
         context.restore();
     }
+
+    paintBall (){
+        const context = this.game.context;
+
+        context.save();
+        
+        context.fillStyle = 'grey';
+        context.fillRect(this.posX, this.posY, this.width, this.height);
+
+        context.restore();
+    }
 }

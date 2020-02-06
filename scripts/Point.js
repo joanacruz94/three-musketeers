@@ -13,7 +13,7 @@ class Point{
     }
 
     moveDown (){
-        this.row += 0.02;
+        this.row += 0.04;
     }
 
     paint (){

@@ -87,7 +87,6 @@ class Menu{
                 if (this.isInside(mousePos,buttonStart)) {
                     this.changeMenu(1);
                     this.parseFilesCharacter();
-                    //this.loop();
                 }else if(this.isInside(mousePos,arrowLeft)) {
                     if(this.i > 0){
                         this.drawBeginMenu(arrayImages[--this.i]);
@@ -121,7 +120,6 @@ class Menu{
                     this.changeMenu(2);
                 }
                 if(idLevel != 0){
-                    this.game.levelAgain(idLevel);
                     this.game.startLevel(idLevel);
                 }
             }
@@ -134,19 +132,34 @@ class Menu{
         this.context.font = '70px verdana';
         this.context.fillText('LEVELS', mWidth - 120, 100);   
         this.context.drawImage(arrowBack, 40, 30, 80, 80);
-        this.context.drawImage(backgroundOne, 115, 250, 100, 100);
-        this.context.drawImage(backFive, 235, 250, 100, 100);
+        this.context.drawImage(backTwo, 115, 250, 100, 100);
+
+        if(this.game.levelOne.allPoints)
+            this.context.drawImage(star, 135, 200, 50, 50);
+
+        this.context.drawImage(backFour, 235, 250, 100, 100);
         if(this.locked.includes(2))
             this.context.drawImage(padlock, 260, 270, 50, 50);
+        if(this.game.levelTwo.allPoints)
+            this.context.drawImage(star, 260, 200, 50, 50);
+
         this.context.drawImage(backSeven, 355, 250, 100, 100);
         if(this.locked.includes(3))
             this.context.drawImage(padlock, 380, 270, 50, 50);
+        if(this.game.levelThree.allPoints)
+            this.context.drawImage(star, 380, 200, 50, 50);
+
         this.context.drawImage(backTwo, 475, 250, 100, 100);
         if(this.locked.includes(4))
             this.context.drawImage(padlock, 500, 270, 50, 50);
+        if(this.game.levelFour.allPoints)
+            this.context.drawImage(star, 500, 200, 50, 50);
+
         this.context.drawImage(backgroundOne, 595, 250, 100, 100); 
         if(this.locked.includes(5))
             this.context.drawImage(padlock, 620, 270, 50, 50);
+        if(this.game.levelFive.allPoints)
+            this.context.drawImage(star, 620, 200, 50, 50);
     }
     
 }

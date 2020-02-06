@@ -32,6 +32,7 @@ class LevelThree extends Level{
         this.door.setPosX(750);
         this.door.setPosY(0);
         this.loadData();
+        this.idLevel = 3;
     }
 
     loadData (){
@@ -79,12 +80,6 @@ class LevelThree extends Level{
             this.snowFlakes[z].runLogic();
         this.runPlatformLogic();
         for(let obstacle of this.obstacles) obstacle.move(); 
-        if(this.finish){
-            this.character.image = this.parser.characterFinished;
-            window.alert(' YOU PASSED');
-            this.gameisRunning = false;
-            this.game.levelAgain(3);
-        }
     }
 
     paint (){

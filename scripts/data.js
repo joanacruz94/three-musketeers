@@ -1,7 +1,6 @@
 const MAX_ROW = 12;
 const MAX_COL = 16;
 const GRID_SIZE = 50;
-//const collisionPadding = 10;
 
 const $canvas = document.querySelector('canvas');
 
@@ -12,6 +11,8 @@ const audio2 = new Audio('./audio/crash.mp3');
 
 const padlock = new Image();
 padlock.src = './images/lock.png';
+const star = new Image();
+star.src = './images/star.png';
 const arrow = new Image();
 arrow.src = './images/arrow.png';
 const arrowBack = new Image();
@@ -46,6 +47,8 @@ const pattern = new Image();
 pattern.src = './images/pattern.png';
 const icePattern = new Image();
 icePattern.src = './images/icePattern.jpg';
+const monsterfinal = new Image();
+monsterfinal.src = './images/randall.png';
 
 
 /***** DATA FOR RAYMAN *****/

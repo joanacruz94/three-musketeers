@@ -23,6 +23,7 @@ class Game{
         switch (id){
             case 1:
                 this.levelOne = new LevelOne(this, this.menu, this.parser);
+                this.levelOne.allPoints = true;
                 break;
             case 2:
                 this.levelTwo = new LevelTwo(this, this.menu, this.parser);
