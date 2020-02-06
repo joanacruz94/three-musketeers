@@ -49,7 +49,7 @@ class LevelFour extends Level{
             point.moveDown();
         if(this.character.posY > this.game.$canvas.height){
             keysDown = new Array();
-            window.alert("YOU LOST");
+            this.lost = true;
             this.gameisRunning = false;
             this.game.levelAgain(this.idLevel);
         }

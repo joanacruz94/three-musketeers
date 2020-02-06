@@ -84,9 +84,9 @@ class LevelTwo extends Level{
         for(let obstacle of this.obstacles) obstacle.moveLeft();
         if(this.character.posY > this.game.$canvas.height){
             keysDown = new Array();
-            window.alert("YOU LOST");
+            this.lost = true;
             this.gameisRunning = false;
-            this.game.levelAgain(2);
+            this.game.levelAgain(this.idLevel);
         }
     }
 

@@ -3,8 +3,8 @@ class Point{
         this.game = game;
         this.row = row;
         this.col = col;
-        this.width = 40;
-        this.height = 40;
+        this.width = 35;
+        this.height = 35;
         this.image = image;
     }
 

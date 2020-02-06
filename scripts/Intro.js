@@ -15,14 +15,15 @@ class Menu{
         this.locked.push(4);
         this.locked.push(3);
         this.locked.push(2);
+        this.allPoints = [];
         this.parser = new Parser();
         this.game = new Game(this.$canvas, this, this.parser);
     }
 
     beginMenu(){
-        arrayMusic[0].play();
         window.addEventListener(('load'), (image) => {
             this.drawBeginMenu(raymanF);
+            arrayMusic[0].play();
         });
     }
 
@@ -37,14 +38,17 @@ class Menu{
         this.context.fillStyle = 'grey';
         this.context.fillRect(mWidth - 100, mHeight + 50, 200, 100);
         this.context.fillStyle = 'white';
-        this.context.font = '48px verdana';
-        this.context.fillText('START', mWidth - 70, mHeight + 110);
+        this.context.font = '50px Courier New';
+        this.context.fillText('START', mWidth - 75, mHeight + 113);
         this.context.drawImage(arrow, 100, 150, 150, 150);
         this.context.drawImage(arrowMirror, 570, 150, 150, 150);
         if(image === raymanF)
             this.context.drawImage(image, 290, 150, 200, 200);
         else
             this.context.drawImage(image, 250, 150, 300, 200);
+        this.context.fillStyle = 'white';
+        this.context.font = '16px Courier New';
+        this.context.fillText('Choose your character', mWidth - 100, mHeight + 180);
     }
 
     isInside(pos, rect){
@@ -85,8 +89,10 @@ class Menu{
             if(this.runningMenu){
                 arrayMusic[this.i].pause();
                 if (this.isInside(mousePos,buttonStart)) {
-                    this.changeMenu(1);
                     this.parseFilesCharacter();
+                    setTimeout(() => {
+                        this.changeMenu(1);
+                    }, 200);
                 }else if(this.isInside(mousePos,arrowLeft)) {
                     if(this.i > 0){
                         this.drawBeginMenu(arrayImages[--this.i]);
@@ -108,13 +114,13 @@ class Menu{
                 let idLevel = 0;
                 if (this.isInside(mousePos,level1)) {
                     idLevel = 1;
-                }else if(this.isInside(mousePos,level2) && !this.locked.includes(2)){
+                }else if(this.isInside(mousePos,level2) /*&& !this.locked.includes(2)*/){
                     idLevel = 2;
-                }else if(this.isInside(mousePos,level3) && !this.locked.includes(3)){
+                }else if(this.isInside(mousePos,level3) /*&& !this.locked.includes(3)*/){
                     idLevel = 3;
-                }else if(this.isInside(mousePos,level4) && !this.locked.includes(4)){
+                }else if(this.isInside(mousePos,level4) /*&& !this.locked.includes(4)*/){
                     idLevel = 4;
-                }else if(this.isInside(mousePos,level5) && !this.locked.includes(5)){
+                }else if(this.isInside(mousePos,level5) /*&& !this.locked.includes(5)*/){
                     idLevel = 5;
                 }else if(this.isInside(mousePos,arrowChange)){
                     this.changeMenu(2);
@@ -129,37 +135,58 @@ class Menu{
     drawLevelsMenu (){
         this.clearScreen();   
         this.context.fillStyle = 'grey';
-        this.context.font = '70px verdana';
+        this.context.font = '70px Courier New';
         this.context.fillText('LEVELS', mWidth - 120, 100);   
         this.context.drawImage(arrowBack, 40, 30, 80, 80);
         this.context.drawImage(backTwo, 115, 250, 100, 100);
 
-        if(this.game.levelOne.allPoints)
+        if(this.allPoints.includes(1))
             this.context.drawImage(star, 135, 200, 50, 50);
 
         this.context.drawImage(backFour, 235, 250, 100, 100);
         if(this.locked.includes(2))
             this.context.drawImage(padlock, 260, 270, 50, 50);
-        if(this.game.levelTwo.allPoints)
+        if(this.allPoints.includes(2))
             this.context.drawImage(star, 260, 200, 50, 50);
 
         this.context.drawImage(backSeven, 355, 250, 100, 100);
         if(this.locked.includes(3))
             this.context.drawImage(padlock, 380, 270, 50, 50);
-        if(this.game.levelThree.allPoints)
+        if(this.allPoints.includes(3))
             this.context.drawImage(star, 380, 200, 50, 50);
 
         this.context.drawImage(backTwo, 475, 250, 100, 100);
         if(this.locked.includes(4))
             this.context.drawImage(padlock, 500, 270, 50, 50);
-        if(this.game.levelFour.allPoints)
+            if(this.allPoints.includes(4))
             this.context.drawImage(star, 500, 200, 50, 50);
 
-        this.context.drawImage(backgroundOne, 595, 250, 100, 100); 
+        this.context.drawImage(purpleBack, 595, 250, 100, 100); 
         if(this.locked.includes(5))
             this.context.drawImage(padlock, 620, 270, 50, 50);
-        if(this.game.levelFive.allPoints)
+        if(this.allPoints.includes(5))
             this.context.drawImage(star, 620, 200, 50, 50);
+
+        this.context.fillStyle = 'white';
+        this.context.font = '20px Courier New';
+        this.context.fillText('Instructions:', 118, 400); 
+        this.context.font = '14px Courier New';
+        this.context.fillText('Space -> Jump', 118, 420);
+        this.context.fillText('ArrowLeft -> Move Left', 118, 440);
+        this.context.fillText('ArrowRight -> Move Right', 118, 460);
+        this.context.fillText('Key s -> Shoot fireball', 118, 480);
+        this.context.fillText('Escape -> Stop level', 118, 500); 
+
+        this.context.drawImage(this.parser.point, 400, 380, 40, 40);
+        this.context.drawImage(this.parser.door, 400, 420, 40, 40);
+        this.context.drawImage(this.parser.monsterLevel1, 395, 460, 50, 50);
+        this.context.drawImage(this.parser.monsterLevel2, 400, 515, 30, 30);
+        this.context.drawImage(this.parser.monsterLevel3, 400, 555, 30, 30);
+        this.context.fillText('Catch me all and you receive a star', 445, 410);
+        this.context.fillText('Catch me to end the level', 445, 445);
+        this.context.fillText('Avoid me! Or you die', 445, 490);
+        this.context.fillText('Avoid me! Or you die', 445, 530);
+        this.context.fillText('Avoid me! Or you die', 445, 570);
     }
     
 }

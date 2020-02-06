@@ -26,6 +26,19 @@ class Obstacle{
         }
     }
 
+    runLogicLevelFive (){
+        this.posX += this.xSpeed;
+
+        if (this.posX < 100) {
+            this.xSpeed *= -1;
+            this.direction = 'right';
+        }
+        else if(this.posX > 800){
+            this.xSpeed *= -1;
+            this.direction = 'left';
+        }
+    }
+
     move (){
         this.posY += this.ySpeed;
 
@@ -57,14 +70,4 @@ class Obstacle{
         context.restore();
     }
 
-    paintBall (){
-        const context = this.game.context;
-
-        context.save();
-        
-        context.fillStyle = 'grey';
-        context.fillRect(this.posX, this.posY, this.width, this.height);
-
-        context.restore();
-    }
 }

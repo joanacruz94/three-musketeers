@@ -10,6 +10,7 @@ class Level{
         this.door = new Door(game, this.parser.door);
         this.shoots = [];
         this.finish = false;
+        this.lost = false;
         this.menu = menu;
         this.allPoints = false;
         this.idLevel = 0;
@@ -35,7 +36,7 @@ class Level{
             this.platforms[i].paint();
         for(let j = 0; j < this.points.length; j++)
             this.points[j].paint();
-        this.door.paint();
+        if(this.door) this.door.paint();
         for(let shoot of this.shoots) shoot.paint();
         for(let obstacle of this.obstacles) obstacle.paint();
     }
@@ -101,31 +102,30 @@ class Level{
                     found = checkIntersection(
                         this.shoots[j].posX, this.shoots[j].posY, this.shoots[j].width, this.shoots[j].height, this.obstacles[i].posY / GRID_SIZE, this.obstacles[i].posX / GRID_SIZE, this.obstacles[i].width, this.obstacles[i].height);
                     if(this.shoots[j].posX === this.game.$canvas.width || this.shoots[j].posX === 0) {
-                        
                         this.shoots.splice(j, 1);
                     }   
                     if(found) {
+                        if(this.obstacles[i] instanceof Monster && this.obstacles[i].lifes > 0) this.obstacles[i].lifes--;
+                        else this.obstacles.splice(i, 1);
                         this.shoots.splice(j, 1);
-                        this.obstacles.splice(i, 1);
                     }
                 }
             }
         }
 
         for (let i = 0; i < this.obstacles.length; i++) {
-            let lost = false;
-            lost = checkIntersection(
+            this.lost = checkIntersection(
                 this.character.posX, this.character.posY, this.character.width, this.character.height, this.obstacles[i].posY / GRID_SIZE, this.obstacles[i].posX / GRID_SIZE, this.obstacles[i].width, this.obstacles[i].height);
-            if(lost) {
+            if(this.lost) {
                 keysDown = new Array();
-                window.alert("YOU LOST");
-                this.gameisRunning = false;
                 this.game.levelAgain(this.idLevel);
+                this.gameisRunning = false;
             }
         }
 
-        this.finish = checkIntersection(
-           this.character.posX, this.character.posY, this.character.width, this.character.height, this.door.posY / GRID_SIZE, this.door.posX / GRID_SIZE, this.door.width, this.door.height);
+        if(this.door)
+            this.finish = checkIntersection(
+               this.character.posX, this.character.posY, this.character.width, this.character.height, this.door.posY / GRID_SIZE, this.door.posX / GRID_SIZE, this.door.width, this.door.height);
 
         if(keys.escape in keysDown){
             this.gameisRunning = false;
@@ -133,9 +133,8 @@ class Level{
 
         if(this.finish){
             keysDown = new Array();
-            if(this.points.length === 0) this.allPoints = true;
+            if(this.points.length === 0) this.menu.allPoints.push(this.idLevel);
             this.character.image = this.parser.characterFinished;
-            window.alert("YOU PASSED");
             this.gameisRunning = false;
             this.menu.locked.pop();
             this.game.levelAgain(this.idLevel);
@@ -150,7 +149,20 @@ class Level{
             window.requestAnimationFrame((timestamp) => this.loop(timestamp));
         }
         else {
-            this.menu.changeMenu(1);
+            this.clearScreen();
+            if(this.lost){
+                this.game.context.fillStyle = 'white';
+                this.game.context.font = '50px Courier New';
+                this.game.context.fillText('TRY AGAIN', 270, 300);
+                setTimeout(() => this.menu.changeMenu(1), 3000);
+            } else if(this.finish){
+                this.game.context.fillStyle = 'white';
+                this.game.context.font = '50px Courier New';
+                this.game.context.fillText('YOU PASSED LEVEL ' + this.idLevel, 140, 300);
+                setTimeout(() => this.menu.changeMenu(1), 3000);
+            } else{
+                this.menu.changeMenu(1);
+            }
         }
     }
 

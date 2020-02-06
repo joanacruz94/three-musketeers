@@ -29,8 +29,8 @@ class LevelThree extends Level{
         this.point9 = new Point(game, 2, 13, this.parser.point);
         this.point10 = new Point(game, 1, 14, this.parser.point);
         this.snowFlakes = [];
-        this.door.setPosX(750);
-        this.door.setPosY(0);
+        this.door.setPosX(400);
+        this.door.setPosY(50);
         this.loadData();
         this.idLevel = 3;
     }

@@ -49,7 +49,10 @@ const icePattern = new Image();
 icePattern.src = './images/icePattern.jpg';
 const monsterfinal = new Image();
 monsterfinal.src = './images/randall.png';
-
+const purpleMo = new Image();
+purpleMo.src = './images/purpleM.png';
+const purpleBack = new Image();
+purpleBack.src = './images/purple.jpg';
 
 /***** DATA FOR RAYMAN *****/
 const r1 = './images/rayman1.png';

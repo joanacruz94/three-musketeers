@@ -19,8 +19,6 @@ class Parser{
         this.monsterLevel1.src = url6;
         this.monsterLevel2.src = url7;
         this.monsterLevel3.src = url8;
-
-        console.log(this.characterPaused);
     }
 
 
