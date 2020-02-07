@@ -90,9 +90,13 @@ class Menu{
                 arrayMusic[this.i].pause();
                 if (this.isInside(mousePos,buttonStart)) {
                     this.parseFilesCharacter();
+                    this.game.context.clearRect(0, 0, this.game.$canvas.width, this.game.$canvas.height);
+                    this.game.context.fillStyle = 'white';
+                    this.game.context.font = '50px Courier New';
+                    this.game.context.fillText('LOADING ...', 250, 300);
                     setTimeout(() => {
                         this.changeMenu(1);
-                    }, 2000);
+                    }, 2500);
                 }else if(this.isInside(mousePos,arrowLeft)) {
                     if(this.i > 0){
                         this.drawBeginMenu(arrayImages[--this.i]);
