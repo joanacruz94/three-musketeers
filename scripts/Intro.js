@@ -92,7 +92,7 @@ class Menu{
                     this.parseFilesCharacter();
                     setTimeout(() => {
                         this.changeMenu(1);
-                    }, 500);
+                    }, 700);
                 }else if(this.isInside(mousePos,arrowLeft)) {
                     if(this.i > 0){
                         this.drawBeginMenu(arrayImages[--this.i]);
