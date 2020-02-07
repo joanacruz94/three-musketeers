@@ -92,7 +92,7 @@ class Menu{
                     this.parseFilesCharacter();
                     setTimeout(() => {
                         this.changeMenu(1);
-                    }, 200);
+                    }, 500);
                 }else if(this.isInside(mousePos,arrowLeft)) {
                     if(this.i > 0){
                         this.drawBeginMenu(arrayImages[--this.i]);
@@ -114,13 +114,13 @@ class Menu{
                 let idLevel = 0;
                 if (this.isInside(mousePos,level1)) {
                     idLevel = 1;
-                }else if(this.isInside(mousePos,level2) /*&& !this.locked.includes(2)*/){
+                }else if(this.isInside(mousePos,level2) && !this.locked.includes(2)){
                     idLevel = 2;
-                }else if(this.isInside(mousePos,level3) /*&& !this.locked.includes(3)*/){
+                }else if(this.isInside(mousePos,level3) && !this.locked.includes(3)){
                     idLevel = 3;
-                }else if(this.isInside(mousePos,level4) /*&& !this.locked.includes(4)*/){
+                }else if(this.isInside(mousePos,level4) && !this.locked.includes(4)){
                     idLevel = 4;
-                }else if(this.isInside(mousePos,level5) /*&& !this.locked.includes(5)*/){
+                }else if(this.isInside(mousePos,level5) && !this.locked.includes(5)){
                     idLevel = 5;
                 }else if(this.isInside(mousePos,arrowChange)){
                     this.changeMenu(2);
